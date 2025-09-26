@@ -1,0 +1,66 @@
+/* NestWatch Design Tokens - Always enabled */
+/* DO NOT modify existing tokens - these are additive */
+
+/* Global font family for NestWatch theme */
+[data-nestwatch-theme="true"] {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+:root {
+  /* NestWatch Color Tokens - Matching Demo Exactly */
+  --nw-navy: #1e293b;             /* Dark navy from demo */
+  --nw-navy-tint: #334155;        /* Lighter navy tint */
+  --nw-peach: #fb7185;            /* Critical P1 - pink/coral from demo */
+  --nw-sunflower: #fbbf24;        /* High P2 - yellow from demo */
+  --nw-lime: #22c55e;             /* Healthy/OK - green from demo */
+  --nw-beige: #f8fafc;            /* Light background */
+  --nw-white: #ffffff;
+  
+  /* Demo neutrals */
+  --nw-g700: #374151;
+  --nw-g500: #6b7280;
+  --nw-g300: #d1d5db;
+
+  /* NestWatch Radius Tokens - match existing scale */
+  --nw-radius-sm: 8px;
+  --nw-radius-md: 12px;
+  --nw-radius-lg: 16px;
+
+  /* NestWatch Shadow Tokens - use existing shadow system */
+  --nw-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --nw-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --nw-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Theme-specific tokens */
+  --nw-surface: var(--nw-white);
+  --nw-surface-secondary: var(--nw-beige);
+  --nw-text-primary: var(--nw-navy);
+  --nw-text-secondary: var(--nw-g700);
+  --nw-border: var(--nw-g300);
+  --nw-focus-ring: var(--nw-navy-tint);
+}
+
+/* Dark theme overrides - Matching Demo Dark Theme */
+[data-theme="dark"] {
+  --nw-surface: #0f172a;          /* Very dark blue from demo */
+  --nw-surface-secondary: #1e293b; /* Navy from demo */
+  --nw-text-primary: #f1f5f9;     /* Light text */
+  --nw-text-secondary: #cbd5e1;   /* Secondary light text */
+  --nw-border: #334155;           /* Dark border */
+  --nw-focus-ring: var(--nw-lime);
+  
+  /* Dark theme chip colors - maintain visibility */
+  --nw-peach: #fb7185;            /* Keep bright for visibility */
+  --nw-sunflower: #fbbf24;        /* Keep bright for visibility */
+  --nw-lime: #22c55e;             /* Keep bright for visibility */
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .nw-animate {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* NestWatch styles are always enabled */

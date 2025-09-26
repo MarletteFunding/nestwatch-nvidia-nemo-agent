@@ -1,0 +1,195 @@
+/* NestWatch Component Styles - Always enabled */
+/* All styles are scoped to .nw- prefix to avoid collisions */
+
+/* Typography - Matching Demo Font */
+.nw-heading {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--nw-text-primary);
+}
+
+.nw-subtitle {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--nw-text-secondary);
+}
+
+.nw-body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--nw-text-primary);
+}
+
+.nw-hint {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--nw-text-secondary);
+}
+
+/* Cards and Panels */
+.nw-card {
+  background-color: var(--nw-surface);
+  border: 1px solid var(--nw-border);
+  border-radius: var(--nw-radius-md);
+  box-shadow: var(--nw-shadow-md);
+  transition: all 150ms ease-out;
+}
+
+.nw-card:hover {
+  box-shadow: var(--nw-shadow-lg);
+  transform: translateY(-2px);
+}
+
+.nw-card--critical {
+  position: relative;
+}
+
+.nw-card--critical::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: var(--nw-peach);
+  border-radius: var(--nw-radius-sm) 0 0 var(--nw-radius-sm);
+}
+
+/* Priority Chips - Small inline elements matching NestWatch demo */
+.nw-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--nw-radius-sm);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 150ms ease-out;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.nw-chip:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.nw-chip--p1 {
+  background-color: var(--nw-peach);
+  color: var(--nw-navy);
+}
+
+.nw-chip--p2 {
+  background-color: var(--nw-sunflower);
+  color: var(--nw-navy);
+}
+
+.nw-chip--p3 {
+  background-color: transparent !important;
+  color: var(--nw-navy-tint) !important;
+  border: 1px solid var(--nw-navy-tint) !important;
+  box-shadow: none !important;
+}
+
+/* Dark theme P3 chip */
+[data-theme="dark"] .nw-chip--p3 {
+  color: var(--nw-text-secondary) !important;
+  border-color: var(--nw-border) !important;
+}
+
+.nw-chip--healthy {
+  background-color: var(--nw-lime);
+  color: var(--nw-navy);
+}
+
+/* Dark theme chip adjustments */
+[data-theme="dark"] .nw-chip--p1 {
+  color: var(--nw-navy) !important; /* Keep dark text on bright background */
+}
+
+[data-theme="dark"] .nw-chip--p2 {
+  color: var(--nw-navy) !important; /* Keep dark text on bright background */
+}
+
+[data-theme="dark"] .nw-chip--healthy {
+  color: var(--nw-navy) !important; /* Keep dark text on bright background */
+}
+
+/* Buttons */
+.nw-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--nw-radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 150ms ease-out;
+  border: 1px solid transparent;
+  box-shadow: var(--nw-shadow-sm);
+}
+
+.nw-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--nw-shadow-md);
+}
+
+.nw-btn--progressive {
+  background-color: var(--nw-lime);
+  color: var(--nw-navy);
+}
+
+.nw-btn--progressive:hover {
+  filter: brightness(1.1);
+}
+
+.nw-btn--action {
+  background-color: var(--nw-surface);
+  color: var(--nw-text-primary);
+  border-color: var(--nw-border);
+}
+
+.nw-btn--action:hover {
+  background-color: var(--nw-surface-secondary);
+}
+
+/* Focus Rings for Accessibility */
+.nw-focus-ring:focus-visible {
+  outline: 2px solid var(--nw-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--nw-radius-sm);
+}
+
+/* Animations */
+.nw-animate {
+  transition: all 150ms ease-out;
+}
+
+.nw-animate:hover {
+  transform: scale(1.02);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .nw-card,
+  .nw-chip,
+  .nw-btn,
+  .nw-animate {
+    transition: none !important;
+    animation: none !important;
+  }
+  
+  .nw-card:hover,
+  .nw-chip:hover,
+  .nw-btn:hover,
+  .nw-animate:hover {
+    transform: none !important;
+  }
+}

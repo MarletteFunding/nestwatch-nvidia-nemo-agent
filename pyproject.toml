@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nemo-agent-toolkit"
+version = "1.0.0"
+description = "NVIDIA NeMo Agent Toolkit for SRE Operations"
+authors = [
+    {name = "SRE Team", email = "sre@example.com"}
+]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "pydantic>=2.5.0",
+    "python-multipart>=0.0.6",
+    "torch>=2.0.0",
+    "transformers>=4.21.0",
+    "nemo_toolkit>=2.4.0",
+    "openai>=1.0.0",
+]
+
+[tool.pylint]
+disable = ["import-error"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [
+    ".git",
+    "__pycache__",
+    "venv",
+    "backend/venv",
+    "node_modules"
+]

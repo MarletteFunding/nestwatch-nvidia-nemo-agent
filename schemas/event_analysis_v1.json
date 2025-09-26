@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EventAnalysis v1",
+  "type": "object",
+  "required": ["window","totals","by_priority","by_source","clusters","top_events","recommendations","actions","next_data_to_fetch"],
+  "properties": {
+    "window": { "type": "string" },
+    "totals": { "type": "integer", "minimum": 0 },
+    "by_priority": {
+      "type": "object",
+      "required": ["P1","P2","P3"],
+      "properties": { "P1":{"type":"integer"}, "P2":{"type":"integer"}, "P3":{"type":"integer"} }
+    },
+    "by_source": {
+      "type": "object",
+      "properties": { "jira":{"type":"integer"}, "datadog":{"type":"integer"}, "jams":{"type":"integer"} }
+    },
+    "clusters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["theme","count","representatives","suggested_owner"],
+        "properties": {
+          "theme": { "type":"string" },
+          "count": { "type":"integer" },
+          "representatives": { "type":"array", "items": { "type": "string" } },
+          "suggested_owner": { "type":"string" }
+        }
+      }
+    },
+    "top_events": {
+      "type": "array",
+      "maxItems": 10,
+      "items": {
+        "type":"object",
+        "required": ["id","priority","source","why_top"],
+        "properties": {
+          "id":{"type":"string"},
+          "priority":{"type":"string","enum":["P1","P2","P3"]},
+          "source":{"type":"string","enum":["jira","datadog","jams"]},
+          "why_top":{"type":"string"}
+        }
+      }
+    },
+    "recommendations": { "type":"array", "items": { "type":"string" } },
+    "actions": {
+      "type":"array",
+      "items": {
+        "type":"object",
+        "required": ["provider","operation","params","why","risk","rollback","requires_approval","dry_run","idempotency_key"],
+        "properties": {
+          "provider": { "type":"string", "enum": ["slack","jira","datadog","jams","confluence"] },
+          "operation": { "type":"string" },
+          "params": { "type":"object" },
+          "why": { "type":"string" },
+          "risk": { "type":"string" },
+          "rollback": { "type":"string" },
+          "requires_approval": { "type":"boolean" },
+          "dry_run": { "type":"boolean" },
+          "idempotency_key": { "type":"string" }
+        }
+      }
+    },
+    "next_data_to_fetch": { "type":"array", "items": { "type":"string" } }
+  },
+  "additionalProperties": false
+}

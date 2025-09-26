@@ -1,0 +1,18 @@
+# Core FastAPI dependencies
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# LLM and AI dependencies
+openai>=1.0.0
+anthropic>=0.18.0
+jsonschema>=4.25.0
+
+# Optional ML dependencies (install if needed)
+# torch>=2.0.0
+# transformers>=4.21.0
+# nemo_toolkit>=2.4.0
+
+# Development dependencies
+python-dotenv>=1.0.0
