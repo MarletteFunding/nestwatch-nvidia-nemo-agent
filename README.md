@@ -2,7 +2,7 @@
 
 *Vigilant monitoring. Intelligent response. Reliable systems.*
 
-A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dashboard with Anthropic Claude integration, real-time event monitoring, and intelligent incident response capabilities.
+A production-ready AI-powered ORO (Observability and Response Operations) monitoring dashboard with Anthropic Claude integration, real-time event monitoring, and intelligent incident response capabilities.
 
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
 [![GitHub](https://img.shields.io/badge/GitHub-NestWatch-blue)](https://github.com/skerns321/nestwatch-nvidia-nemo-agent)
@@ -11,15 +11,15 @@ A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dash
 ## 🚀 Features
 
 ### Core Capabilities
-- 🤖 **AI-Powered Analysis** - Anthropic Claude (claude-3-5-sonnet-20241022) integration for intelligent SRE assistance
+- 🤖 **AI-Powered Analysis** - Anthropic Claude (claude-3-5-sonnet-20241022) integration for intelligent ORO assistance
 - 📊 **Real-time SRE Events** - Monitor 104+ active production events with priority filtering
 - 🎨 **NestWatch Design System** - Beautiful modern UI with light/dark themes and custom iconography
 - ⚡ **FastAPI Backend** - High-performance Python backend with comprehensive APIs
 - 🌐 **Next.js Frontend** - Modern React frontend with real-time updates and responsive design
-- 🔧 **Multi-Source Integration** - SRE API, JIRA, and Datadog integrations
+- 🔧 **Multi-Source Integration** - ORO API, JIRA, and Datadog integrations
 - 💰 **LLM Quota Controls** - Advanced caching, circuit breakers, and budget management
 
-### SRE-Specific Features
+### ORO-Specific Features
 - **Priority Filtering** - P1 (Critical), P2 (High), P3 (Medium) event classification
 - **Source Filtering** - Filter by SRE API, JIRA tickets, and Datadog alerts
 - **Single Panel Dashboard** - All functionality consolidated on one page
@@ -40,7 +40,7 @@ A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dash
 - **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
 - **Backend**: FastAPI + Python + Uvicorn
 - **AI**: Anthropic Claude (claude-3-5-sonnet-20241022)
-- **Theme**: Custom NestWatch design system
+- **Theme**: Custom NestWatch Best Egg Branding design system
 - **Deployment**: Production-ready with 74 files, 17,894+ lines of code
 
 ## 🚀 Quick Start
@@ -97,7 +97,7 @@ echo "ANTHROPIC_API_KEY=your_api_key_here" > .env.local
 Open **http://localhost:3000/dashboard** and explore:
 
 **Main Dashboard:**
-- View all 104+ live SRE events
+- View all 104+ live ORO events
 - Filter by priority (P1, P2, P3) and source
 - Real-time updates with auto-refresh
 - AI-powered insights and analysis
@@ -109,7 +109,7 @@ Open **http://localhost:3000/dashboard** and explore:
 
 ### API Endpoints
 
-#### SRE Events
+#### ORO Events
 ```bash
 # Get all events
 curl http://localhost:8000/event_interactions/events
@@ -129,7 +129,7 @@ curl http://localhost:8000/api/v1/nemo/health
 # Dashboard insights
 curl -X POST http://localhost:8000/api/v1/nemo/dashboard-insights \
   -H "Content-Type: application/json" \
-  -d '{"events": [], "context": "SRE monitoring"}'
+  -d '{"events": [], "context": "ORO monitoring"}'
 ```
 
 ## 🔧 Configuration
@@ -143,8 +143,8 @@ ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
 ANTHROPIC_TEMPERATURE=0.0
 ANTHROPIC_MAX_TOKENS=600
 
-# SRE API Configuration
-SRE_API_BASE_URL=https://sre-api-service-ext.bestegg.com
+# ORO API Configuration
+ORO_API_BASE_URL=https://ORO-api-service-ext.bestegg.com
 
 # Cache and Performance
 LLM_CACHE_TTL_SEC=300              # Cache TTL (5 minutes)
@@ -168,7 +168,7 @@ NestWatch includes comprehensive quota management to optimize AI usage:
 ### Usage Monitoring
 ```bash
 # Check quota status
-curl http://localhost:8000/api/v1/sre/usage
+curl http://localhost:8000/api/v1/ORO/usage
 ```
 
 ## 🎨 NestWatch Design System
@@ -211,7 +211,7 @@ curl http://localhost:8000/api/v1/sre/usage
 │   ├── icons/nestwatch/          # Custom icon system
 │   └── fab/HawkyFab.tsx          # AI assistant FAB
 ├── components/
-│   └── SRE/                      # React components
+│   └── ORO/                      # React components
 └── public/images/                # Static assets
 ```
 
@@ -277,7 +277,7 @@ curl http://localhost:8000/event_interactions/events
 - **Backend**: 1-10s API responses (with AI processing)
 - **SRE API**: 3-15s data fetching
 - **Build**: ~500ms compilation (314 modules)
-- **Events**: 104+ real-time SRE events
+- **Events**: 104+ real-time ORO events
 
 ### With Quota Controls
 - **AI Calls**: 90% reduction through caching
@@ -287,7 +287,7 @@ curl http://localhost:8000/event_interactions/events
 
 ## 🎉 Production Examples
 
-### Real SRE Events
+### Real ORO Events
 - **Subpool Lambda API Processor Failure** - Individual failures detected
 - **Opportunity Orchestrator High Error Rate** - Instant qualification issues  
 - **IQ Affiliates p95 Latency Monitor** - Performance degradation alerts
@@ -353,13 +353,13 @@ curl http://localhost:8000/api/v1/nemo/health
 **✅ Production Ready**
 - 74 files, 17,894+ lines of production code
 - Comprehensive error handling and fallbacks
-- Real-time monitoring of 104+ SRE events
+- Real-time monitoring of 104+ ORO events
 - Beautiful NestWatch theme with accessibility
 - AI-powered analysis with quota controls
 - Complete documentation and setup guides
 
 ---
 
-## 🎯 The NestWatch NVIDIA NeMo Agent delivers a complete AI-powered SRE operations platform with real production data, intelligent analysis, and enterprise-ready architecture!
+## 🎯 The NestWatch NVIDIA NeMo Agent delivers a complete AI-powered ORO operations platform with real production data, intelligent analysis, and enterprise-ready architecture!
 
 **Ready for immediate deployment and team adoption.** 🚀
