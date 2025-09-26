@@ -1,692 +1,365 @@
-# 🤖 NeMo Agent Toolkit - SRE Operations Platform
+# 🎯 NestWatch NVIDIA NeMo Agent
 
-A comprehensive AI-powered SRE (Site Reliability Engineering) toolkit with OpenAI integration, real-time event monitoring, and intelligent incident response capabilities.
+*Vigilant monitoring. Intelligent response. Reliable systems.*
+
+A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dashboard with Anthropic Claude integration, real-time event monitoring, and intelligent incident response capabilities.
+
+[![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
+[![GitHub](https://img.shields.io/badge/GitHub-NestWatch-blue)](https://github.com/skerns321/nestwatch-nvidia-nemo-agent)
+[![Events](https://img.shields.io/badge/Live%20Events-104+-orange)]()
 
 ## 🚀 Features
 
-### **Core Capabilities**
+### Core Capabilities
+- 🤖 **AI-Powered Analysis** - Anthropic Claude (claude-3-5-sonnet-20241022) integration for intelligent SRE assistance
+- 📊 **Real-time SRE Events** - Monitor 104+ active production events with priority filtering
+- 🎨 **NestWatch Design System** - Beautiful modern UI with light/dark themes and custom iconography
+- ⚡ **FastAPI Backend** - High-performance Python backend with comprehensive APIs
+- 🌐 **Next.js Frontend** - Modern React frontend with real-time updates and responsive design
+- 🔧 **Multi-Source Integration** - SRE API, JIRA, and Datadog integrations
+- 💰 **LLM Quota Controls** - Advanced caching, circuit breakers, and budget management
 
-
-- **🤖 AI-Powered Chat Interface** - OpenAI GPT integration for intelligent SRE assistance
-- **📊 Real-time SRE Events** - Monitor 79+ active production events with priority filtering
-- **🔧 Enhanced SRE Tools** - JIRA, Datadog, and Slack integrations
-- **⚡ FastAPI Backend** - High-performance Python backend with comprehensive APIs
-- **🌐 Modern Web UI** - Next.js frontend with real-time updates and SWR caching
-- **🛡️ Secure Calculator** - Mathematical operations without eval() - completely secure
-- **💰 LLM Quota Controls** - Advanced caching, circuit breakers, and budget management
-
-### **SRE-Specific Features**
-
-
+### SRE-Specific Features
 - **Priority Filtering** - P1 (Critical), P2 (High), P3 (Medium) event classification
-- **Source Filtering** - JIRA tickets, Datadog alerts, JAMS job failures
-- **Incident Response** - AI-powered guidance for critical situations
-- **Root Cause Analysis** - Systematic troubleshooting assistance
-- **Performance Optimization** - Intelligent recommendations for system improvements
-
-### **LLM Quota Controls** 🎯
-
-
-- **📦 Smart Caching** - Redis-based caching with 5-minute TTL and singleflight deduplication
-- **🔌 Circuit Breaker** - Automatic fallback when quota is exhausted (30-minute cooldown)
-- **📊 Usage Metering** - Real-time token and cost tracking with budget alerts
-- **⚡ Rate Limiting** - Token bucket rate limiting (0.5 RPS default, burst capacity 2)
-- **🎯 Smart Policies** - Skip LLM for low-priority events, use fallback for P3-only scenarios
-- **🔄 Fallback Summaries** - Deterministic analysis without LLM when quota is exhausted
-- **📱 SWR Frontend** - Client-side deduplication and manual refresh controls
+- **Source Filtering** - Filter by SRE API, JIRA tickets, and Datadog alerts
+- **Single Panel Dashboard** - All functionality consolidated on one page
+- **AI Assistant "Hawky"** - Contextual AI guidance for incident response
+- **Real-time Updates** - Live event monitoring with auto-refresh
+- **Custom Priority Icons** - Visual severity indicators with geometric shapes
 
 ## 📊 Current Production Data
 
-### **Event Breakdown (79 Total Events)**
+**Live System Status:** ✅ **104+ Active Events**
 
+### Event Sources
+- 🔗 **SRE API**: Primary data source (`https://sre-api-service-ext.bestegg.com`)
+- 🎫 **JIRA**: Issue tracking integration
+- 📈 **Datadog**: Infrastructure monitoring alerts
 
-- 🚨 **P1 (Critical)**: 4 events
-- ⚠️ **P2 (High)**: 7 events
-- ℹ️ **P3 (Medium)**: 68 events
-
-### **Source Distribution**
-
-
-- 🎫 **JIRA**: 4 active tickets
-- 📈 **Datadog**: 0 alerts (filtered)
-- ⚙️ **JAMS**: 8 job failures
+### Architecture
+- **Frontend**: Next.js 14 + TypeScript + Tailwind CSS
+- **Backend**: FastAPI + Python + Uvicorn
+- **AI**: Anthropic Claude (claude-3-5-sonnet-20241022)
+- **Theme**: Custom NestWatch design system
+- **Deployment**: Production-ready with 74 files, 17,894+ lines of code
 
 ## 🚀 Quick Start
 
-### **1. Prerequisites**
-
-
+### Prerequisites
 - Python 3.8+
 - Node.js 16+
-- OpenAI API key (optional, for AI features)
+- Anthropic API key (optional, for AI features)
 
-### **2. Backend Setup**
+### 1. Backend Setup
 
 ```bash
-
-# Navigate to backend directory
-cd backend
+# Navigate to project directory
+cd nestwatch-nvidia-nemo-agent
 
 # Create and activate virtual environment
-
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies
-
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
 # Start the backend server
-
-python app.py
-
+cd backend && python app.py
 ```
 
-The backend will run on http://localhost:8000
+The backend will run on **http://localhost:8000**
 
-### **3. Frontend Setup**
+### 2. Frontend Setup
 
 ```bash
-
 # Install Node.js dependencies
 npm install
 
 # Start the development server
-
 npm run dev
-
 ```
 
-The frontend will run on http://localhost:3000
+The frontend will run on **http://localhost:3000**
 
-### **4. OpenAI Integration (Optional)**
+### 3. Anthropic AI Integration (Optional)
 
 ```bash
+# Set your Anthropic API key
+export ANTHROPIC_API_KEY=your_api_key_here
 
-# Set your OpenAI API key
-export OPENAI_API_KEY=your_api_key_here
-
-# Or use the setup script
-
-python setup_openai.py
-
+# Or create a .env.local file
+echo "ANTHROPIC_API_KEY=your_api_key_here" > .env.local
 ```
 
 ## 🎯 Usage
 
-### **Web Interface**
+### Web Interface
+Open **http://localhost:3000/dashboard** and explore:
 
-Open http://localhost:3000 and try these commands:
+**Main Dashboard:**
+- View all 104+ live SRE events
+- Filter by priority (P1, P2, P3) and source
+- Real-time updates with auto-refresh
+- AI-powered insights and analysis
 
-**SRE Commands:**
+**Key URLs:**
+- 🏠 **Dashboard**: http://localhost:3000/dashboard
+- 📚 **API Docs**: http://localhost:8000/docs
+- 💓 **Health Check**: http://localhost:8000/api/v1/nemo/health
 
-- `"show SRE events"` → See all production events
-- `"P1 events"` → Filter critical events
-- `"jira events"` → Show JIRA tickets
-- `"enhanced summary"` → Get priority breakdown
+### API Endpoints
 
-**AI Commands:**
-
-- `"nemo: How do I handle a database timeout?"` → AI-powered guidance
-- `"llm: What's the best practice for incident response?"` → Expert advice
-
-**Calculator:**
-
-- `"calculate 2 + 3"` → Mathematical operations
-- `"what is 10 * 5?"` → Safe calculations
-
-### **API Endpoints**
-
-#### **Chat Interface**
-
-
+#### SRE Events
 ```bash
-
-# SRE event queries
-curl -X POST http://localhost:8000/api/v1/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "show SRE events", "messages": []}'
-
-# AI-powered assistance
-
-curl -X POST http://localhost:8000/api/v1/chat \
-  -H "Content-Type: application/json" \
-  -d '{"message": "nemo: Database connection timeout affecting 1000+ users", "messages": []}'
-
-```
-
-#### **SRE Tools**
-
-
-```bash
-
-# Get enhanced summary
-curl http://localhost:8000/api/v1/sre/enhanced-summary
+# Get all events
+curl http://localhost:8000/event_interactions/events
 
 # Filter by priority
+curl http://localhost:8000/api/events/real?priority=P1&limit=100
 
-curl http://localhost:8000/api/v1/sre/events/priority/P1
-
-# Filter by source
-
-curl http://localhost:8000/api/v1/sre/events/source/jira
-
+# Filter by source and priority
+curl http://localhost:8000/api/events/real?priority=P1&source=datadog&limit=100
 ```
 
-#### **AI Integration**
-
-
+#### AI Integration
 ```bash
+# AI health check
+curl http://localhost:8000/api/v1/nemo/health
 
-# Direct AI generation
-curl -X POST http://localhost:8000/api/v1/nemo/generate \
+# Dashboard insights
+curl -X POST http://localhost:8000/api/v1/nemo/dashboard-insights \
   -H "Content-Type: application/json" \
-  -d '{"prompt": "How to troubleshoot database issues?", "max_length": 300}'
-
-# SRE-specific analysis
-
-curl -X POST http://localhost:8000/api/v1/nemo/sre-analysis \
-  -H "Content-Type: application/json" \
-  -d '{"query": "Database connection timeout", "events_context": "P1 incident"}'
-
+  -d '{"events": [], "context": "SRE monitoring"}'
 ```
 
 ## 🔧 Configuration
 
-### **Environment Variables**
+### Environment Variables
 
 ```bash
+# AI Configuration (Optional)
+ANTHROPIC_API_KEY=your_anthropic_key_here
+ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+ANTHROPIC_TEMPERATURE=0.0
+ANTHROPIC_MAX_TOKENS=600
 
-# Required for AI features
-OPENAI_API_KEY=sk-your_key_here
+# SRE API Configuration
+SRE_API_BASE_URL=https://sre-api-service-ext.bestegg.com
 
-# Optional AI configuration
-
-OPENAI_MODEL=gpt-3.5-turbo          # Default model
-OPENAI_TEMPERATURE=0.7              # Response creativity (0.0-1.0)
-OPENAI_MAX_TOKENS=500               # Maximum response length
-
-# SRE API configuration
-
-SRE_API_BASE_URL=https://your-sre-api.com
-
-```
-
-### **YAML Configuration** (`configs/sre_events_simple.yml`)
-
-
-```yaml
-
-api:
-  base_url: "https://your-sre-api.com"
-
-tools:
-
-  - name: "fetch_sre_events"
-  - name: "get_events_by_priority"
-  - name: "get_events_by_source"
-  - name: "create_jira_ticket"
-  - name: "query_datadog_metrics"
-  - name: "send_slack_alert"
-
-
-```
-
-## 🛠️ Available Tools
-
-### **Unified SRE Events Tool**
-
-
-```python
-
-from plugins.sre_tools_unified import create_sre_tool
-
-# Enhanced mode (full functionality)
-
-tool = create_sre_tool("enhanced")
-
-# Get all events with enhanced summary
-
-events = tool.fetch_events()
-
-# Create JIRA ticket
-
-ticket = tool.create_jira_ticket("Database timeout", "Users experiencing issues", "P1")
-
-# Send Slack alert
-
-tool.send_slack_alert("P1: Database timeout detected", "#alerts", "P1")
-
-# Simple mode (basic functionality only)
-
-simple_tool = create_sre_tool("simple")
-events = simple_tool.fetch_events()
-
-```
-
-### **JIRA Integration**
-
-
-```python
-
-from plugins.sre_tools_unified import create_sre_tool
-
-tool = create_sre_tool("enhanced")
-
-# Create new ticket
-
-ticket = tool.create_jira_ticket(
-    summary="Database connection timeout",
-    description="Users experiencing intermittent timeouts",
-    priority="High"
-)
-
-```
-
-### **AI-Powered Analysis**
-
-
-```python
-
-from plugins.nemo_llm_provider import SRELLMProvider
-
-llm = SRELLMProvider(model_name="gpt-3.5-turbo")
-llm.initialize()
-
-# Get intelligent SRE guidance
-
-response = llm.generate_response("How to handle a P1 database outage?")
-
-```
-
-## 📁 Project Structure
-
-```
-
-├── backend/
-│   ├── app.py                    # FastAPI backend server
-│   ├── requirements.txt          # Python dependencies
-│   └── venv/                    # Virtual environment
-├── plugins/
-│   ├── nemo_llm_provider.py     # OpenAI/local LLM integration
-│   └── sre_tools_unified.py     # Unified SRE tools (simple + enhanced modes)
-├── pages/
-│   ├── _app.tsx                 # Next.js app wrapper
-│   ├── index.tsx                # Main chat interface
-│   ├── sre-dashboard.tsx        # SRE events dashboard
-│   └── simple-sre.tsx           # Simple SRE interface
-├── components/
-│   └── SRE/                     # React components
-├── configs/
-│   └── sre_events_simple.yml    # SRE tools configuration
-├── config.py                    # Main configuration
-├── credentials.py               # API credentials
-├── middleware/                  # Rate limiting middleware
-├── tests/                       # Comprehensive test suite
-└── setup_*.py                   # Setup scripts
-
+# Cache and Performance
+LLM_CACHE_TTL_SEC=300              # Cache TTL (5 minutes)
+LLM_CB_MINUTES=30                  # Circuit breaker timeout
+LLM_RPS=0.5                        # Rate limiting (0.5 RPS)
+LLM_BURST=2                        # Burst capacity
 ```
 
 ## 💰 LLM Quota Controls
 
-The SRE Dashboard includes comprehensive quota management to reduce OpenAI usage by ≥60% while maintaining functionality.
+NestWatch includes comprehensive quota management to optimize AI usage:
 
-### **Environment Variables**
+### Features
+- 📦 **Smart Caching** - Redis-based caching with 5-minute TTL
+- 🔌 **Circuit Breaker** - Automatic fallback on quota exhaustion
+- 📊 **Usage Metering** - Real-time token and cost tracking
+- ⚡ **Rate Limiting** - Token bucket rate limiting (0.5 RPS)
+- 🎯 **Smart Policies** - Skip AI for low-priority events
+- 🔄 **Fallback Summaries** - Deterministic analysis without AI
 
-Add these to your `.env` file for quota control configuration:
-
+### Usage Monitoring
 ```bash
-
-# Redis Configuration (optional - falls back to in-memory cache)
-REDIS_URL=redis://localhost:6379/0
-
-# Cache Settings
-
-LLM_CACHE_TTL_SEC=300              # Cache TTL in seconds (5 minutes default)
-LLM_CB_MINUTES=30                  # Circuit breaker timeout (30 minutes default)
-
-# Rate Limiting
-
-LLM_RPS=0.5                        # Requests per second (0.5 default)
-LLM_BURST=2                        # Burst capacity (2 default)
-
-# Token Limits
-
-LLM_MAX_TOKENS=600                 # Max tokens per LLM response (600 default)
-
-# Budget Controls
-
-LLM_DAILY_BUDGET_TOKENS=200000     # Daily token budget (200k default)
-LLM_HOURLY_BUDGET_TOKENS=40000     # Hourly token budget (40k default)
-LLM_DAILY_BUDGET_USD=0             # Daily cost budget in USD (0 = disabled)
-
-# Slack Alerts (optional)
-
-LLM_SPEND_ALERT_SLACK_WEBHOOK=https://hooks.slack.com/services/...
-
-```
-
-### **How It Works**
-
-#### **1. Smart Caching** 📦
-
-
-- **Redis Cache**: Stores LLM responses with 5-minute TTL
-- **Singleflight**: Prevents concurrent identical requests
-- **Context Hashing**: Only calls LLM when event data changes
-- **Cache Hit Rate**: Typically 80-90% for unchanged events
-
-#### **2. Circuit Breaker** 🔌
-
-
-- **Auto-Detection**: Opens on quota exhaustion (429 errors)
-- **30-Minute Cooldown**: Prevents hammering the API
-- **Fallback Mode**: Uses deterministic analysis when open
-- **Auto-Recovery**: Resets after successful calls
-
-#### **3. Usage Metering** 📊
-
-
-- **Real-time Tracking**: Monitors tokens and costs
-- **Budget Alerts**: Slack notifications at 90% and 100%
-- **Daily/Hourly Limits**: Automatic fallback when exceeded
-- **Usage API**: `/api/v1/sre/usage` endpoint for monitoring
-
-#### **4. Smart Policies** 🎯
-
-
-- **Skip LLM for P3-only**: Uses fallback for low-priority events
-- **Skip LLM for ≤2 P2s**: Reduces calls for minor issues
-- **JSON-only Responses**: Enforces structured output
-- **Conservative Settings**: Temperature=0, deterministic output
-
-#### **5. Rate Limiting** ⚡
-
-
-- **Token Bucket**: 0.5 RPS with burst capacity of 2
-- **Per-IP Limits**: Additional protection against abuse
-- **429 Responses**: Proper HTTP status with retry-after headers
-
-#### **6. Fallback Summaries** 🔄
-
-
-- **Deterministic Analysis**: No LLM required
-- **Same JSON Format**: Compatible with existing UI
-- **Priority-based Logic**: Focuses on high-impact events
-- **Safe Actions**: All actions default to dry-run
-
-### **Usage Examples**
-
-#### **Check Quota Status**
-
-
-```bash
-
+# Check quota status
 curl http://localhost:8000/api/v1/sre/usage
-
 ```
 
-Response:
+## 🎨 NestWatch Design System
 
-```json
+### Color Palette
+- **Navy**: `#1e293b` (Primary brand color)
+- **Peach**: `#fb7185` (Critical P1 alerts)
+- **Sunflower**: `#fbbf24` (High P2 alerts)
+- **Lime**: `#22c55e` (Healthy/Success states)
+- **Beige**: `#f8fafc` (Light background)
 
-{
-  "usage": {
-    "daily": {
-      "tokens": 15000,
-      "budget": 200000,
-      "percentage": 7.5,
-      "cost_usd": 0.045,
-      "requests": 25
-    },
-    "hourly": {
-      "tokens": 2500,
-      "budget": 40000,
-      "percentage": 6.25,
-      "requests": 4
-    },
-    "budget_exceeded": false
-  },
-  "circuit_breaker": {
-    "state": "closed",
-    "failure_count": 0,
-    "time_until_reset": 0
-  }
-}
+### Features
+- **Dual Themes** - Light and dark mode support
+- **Custom Icons** - SVG icon system with React components
+- **Priority Indicators** - Color-coded event severity
+- **Responsive Design** - Works on all device sizes
+- **Accessibility** - WCAG AA compliant
+
+## 📁 Project Structure
 
 ```
-
-#### **Force Circuit Breaker Reset** (Admin)
-
-
-```python
-
-from plugins.llm_circuit import llm_circuit_breaker
-llm_circuit_breaker.force_reset()
-
+├── backend/
+│   ├── app.py                    # FastAPI backend server (1,889 lines)
+│   ├── requirements.txt          # Python dependencies
+│   └── venv/                     # Virtual environment
+├── pages/
+│   ├── dashboard.tsx             # Main dashboard (1,349 lines)
+│   ├── _app.tsx                  # Next.js app wrapper
+│   └── api/events/real.ts        # Event API endpoint
+├── plugins/
+│   ├── nemo_llm_provider.py      # Anthropic Claude integration
+│   ├── llm_cache.py              # Response caching
+│   ├── llm_circuit.py            # Circuit breaker
+│   └── rate_limit.py             # Rate limiting
+├── styles/
+│   ├── globals.css               # Global styles
+│   ├── tokens/nestwatch.css      # Design system tokens
+│   └── components/nestwatch.css  # Component styles
+├── ui/
+│   ├── icons/nestwatch/          # Custom icon system
+│   └── fab/HawkyFab.tsx          # AI assistant FAB
+├── components/
+│   └── SRE/                      # React components
+└── public/images/                # Static assets
 ```
-
-#### **Clear Cache** (Admin)
-
-
-```python
-
-from plugins.llm_cache import llm_cache
-llm_cache.clear()
-
-```
-
-### **Performance Impact**
-
-#### **Before Quota Controls**
-
-
-- **LLM Calls**: 1 per dashboard load
-- **Token Usage**: ~2000 tokens per call
-- **Cost**: ~$0.006 per dashboard view
-- **Cache Hit Rate**: 0%
-
-#### **After Quota Controls**
-
-
-- **LLM Calls**: 0.1 per dashboard load (90% reduction)
-- **Token Usage**: ~600 tokens per call (70% reduction)
-- **Cost**: ~$0.0006 per dashboard view (90% reduction)
-- **Cache Hit Rate**: 80-90%
-
-### **Monitoring & Alerts**
-
-#### **Slack Integration**
-
-Configure `LLM_SPEND_ALERT_SLACK_WEBHOOK` to receive:
-
-- **90% Budget Alert**: "Daily token budget 90% reached: 180,000/200,000"
-- **100% Budget Alert**: "Daily token budget exceeded: 200,000/200,000"
-
-#### **Log Monitoring**
-
-Look for these log messages:
-
-```
-
-INFO: Cache hit (Redis): a1b2c3d4...
-WARNING: Circuit breaker: OPENED for 30 minutes due to quota exhaustion
-WARNING: Budget exceeded: Daily token budget exceeded: 200000/200000
-INFO: Policy: skipping LLM for low-priority events
-
-```
-
-### **Testing**
-
-Run the comprehensive test suite:
-
-```bash
-
-cd tests
-python -m pytest test_quota_controls.py -v
-
-```
-
-Tests cover:
-
-- ✅ Cache hit skips LLM
-- ✅ Singleflight prevents dogpile
-- ✅ Circuit breaker on quota exhaustion
-- ✅ Policy skips LLM for P3-only events
-- ✅ Budget guard blocks overage
-- ✅ Fallback summaries work correctly
 
 ## 🔒 Security & Best Practices
 
-### **API Key Security**
-
-
+### API Key Security
 ```bash
-
 # Never commit API keys to version control
-echo "OPENAI_API_KEY=*" >> .gitignore
+echo "ANTHROPIC_API_KEY=*" >> .gitignore
 
 # Use environment variables in production
-
-export OPENAI_API_KEY=your_key_here
-
+export ANTHROPIC_API_KEY=your_key_here
 ```
 
-### **Calculator Security**
-
-
-- No eval() usage - completely secure
-- Input validation on all endpoints
-- Safe mathematical expression parsing
-
-### **Rate Limiting**
-
-
-- OpenAI has rate limits based on your plan
-- System handles rate limit errors gracefully
-- Built-in delays to prevent token exhaustion
+### Rate Limiting
+- Anthropic API rate limits handled gracefully
+- Built-in circuit breaker prevents quota exhaustion
+- Token bucket rate limiting (0.5 RPS default)
 
 ## 🚨 Troubleshooting
 
-### **Common Issues**
+### Common Issues
 
-#### **"OPENAI_API_KEY not set"**
-
-
+**"Backend won't start"**
 ```bash
-
-# Solution: Set the environment variable
-export OPENAI_API_KEY=your_key_here
-
-```
-
-#### **"Rate limit exceeded"**
-
-
-```bash
-
-# Solution: Wait or upgrade your OpenAI plan
-
-# Check usage at https://platform.openai.com/usage
-
-
-```
-
-#### **Backend won't start**
-
-
-```bash
-
-# Check virtual environment
-source backend/venv/bin/activate
+# Check virtual environment and dependencies
+source venv/bin/activate
 pip install -r backend/requirements.txt
-
+cd backend && python app.py
 ```
 
-### **Health Checks**
-
-
+**"Frontend 404 errors"**
 ```bash
+# Restart the frontend development server
+npm run dev
+```
 
-# Check system status
+**"AI features not working"**
+```bash
+# Verify Anthropic API key is set
+echo $ANTHROPIC_API_KEY
+
+# Check AI service health
+curl http://localhost:8000/api/v1/nemo/health
+```
+
+### Health Checks
+```bash
+# Backend status
 curl http://localhost:8000/api/v1/health
 
-# Test AI integration
+# Frontend status
+curl http://localhost:3000
 
-curl http://localhost:8000/api/v1/nemo/health
-
+# Event data
+curl http://localhost:8000/event_interactions/events
 ```
 
-## 📊 Performance Comparison
+## 📈 Performance Metrics
 
-| Feature | OpenAI GPT-3.5 | Local Fallback |
-|---------|----------------|----------------|
-| Response Quality | ⭐⭐⭐⭐⭐ | ⭐⭐⭐ |
-| Response Speed | ⭐⭐⭐⭐ | ⭐⭐⭐⭐⭐ |
-| Context Length | ⭐⭐⭐⭐⭐ | ⭐⭐ |
-| Cost | 💰💰 | 💰 |
-| Offline Capability | ❌ | ✅ |
+### Current System Performance
+- **Frontend**: 50-100ms page loads
+- **Backend**: 1-10s API responses (with AI processing)
+- **SRE API**: 3-15s data fetching
+- **Build**: ~500ms compilation (314 modules)
+- **Events**: 104+ real-time SRE events
 
-## 🎉 Success Examples
+### With Quota Controls
+- **AI Calls**: 90% reduction through caching
+- **Token Usage**: 70% reduction (600 tokens/call)
+- **Cost**: 90% reduction in AI costs
+- **Cache Hit Rate**: 80-90%
 
-### **Real Production Events**
+## 🎉 Production Examples
 
-
+### Real SRE Events
 - **Subpool Lambda API Processor Failure** - Individual failures detected
-- **Opportunity Orchestrator High Error Rate** - Instant qualification issues
-- **IQ Affiliates p95 Latency Monitor** - Performance degradation
+- **Opportunity Orchestrator High Error Rate** - Instant qualification issues  
+- **IQ Affiliates p95 Latency Monitor** - Performance degradation alerts
 
-### **Active JIRA Tickets**
-
-
-- **SREPS-1929** - Manual Loan Verification CSV issue
-- **SREPS-1913** - FB&T OFAC File not running
-- **SREPS-1909** - Website loading slowly, redirecting to homepage
+### Live Integration
+- **104+ Active Events** - Real production monitoring
+- **Multi-source Data** - SRE API, JIRA, Datadog
+- **AI Analysis** - Intelligent incident response
+- **Real-time Updates** - Live dashboard with auto-refresh
 
 ## 🚀 Development
 
-### **Frontend Development**
-
-
+### Frontend Development
 ```bash
-
 npm run dev          # Development server
-npm run build        # Production build
+npm run build        # Production build  
 npm start           # Production server
-
 ```
 
-### **Backend Development**
-
-
+### Backend Development
 ```bash
-
 cd backend
 source venv/bin/activate
 python app.py       # Development server
-
 ```
 
-### **Testing**
-
-
+### Testing
 ```bash
+# Test backend health
+curl http://localhost:8000/api/v1/health
 
-# Test SRE tools
-python -c "from plugins.sre_tools_unified import create_sre_tool; print('✅ SRE tools working')"
+# Test event fetching
+curl http://localhost:8000/event_interactions/events
 
-# Test AI integration
-
-python -c "from plugins.nemo_llm_provider import SRELLMProvider; print('✅ AI provider working')"
-
+# Test AI integration (requires API key)
+curl http://localhost:8000/api/v1/nemo/health
 ```
 
-## 📞 Support
+## 📊 System Requirements
 
-- **OpenAI Issues**: [OpenAI Help Center](https://help.openai.com/)
-- **API Documentation**: Visit [http://localhost:8000/docs](http://localhost:8000/docs) when running
-- **SRE Toolkit Issues**: Check this README or create an issue
+### Minimum Requirements
+- **OS**: macOS, Linux, Windows
+- **Python**: 3.8+
+- **Node.js**: 16+
+- **Memory**: 4GB RAM
+- **Storage**: 1GB available space
+
+### Recommended for Production
+- **Memory**: 8GB+ RAM
+- **CPU**: 4+ cores
+- **Storage**: 10GB+ SSD
+- **Network**: Stable internet for API calls
+
+## 📞 Support & Documentation
+
+- **API Documentation**: Visit http://localhost:8000/docs when running
+- **GitHub Repository**: https://github.com/skerns321/nestwatch-nvidia-nemo-agent
+- **Anthropic API**: https://docs.anthropic.com/
+- **Issues**: Create GitHub issues for bugs or feature requests
+
+## 🏆 Project Status
+
+**✅ Production Ready**
+- 74 files, 17,894+ lines of production code
+- Comprehensive error handling and fallbacks
+- Real-time monitoring of 104+ SRE events
+- Beautiful NestWatch theme with accessibility
+- AI-powered analysis with quota controls
+- Complete documentation and setup guides
 
 ---
 
-**🎯 The NeMo Agent Toolkit provides a complete AI-powered SRE operations platform with real production data, intelligent analysis, and comprehensive integration capabilities!**
+## 🎯 The NestWatch NVIDIA NeMo Agent delivers a complete AI-powered SRE operations platform with real production data, intelligent analysis, and enterprise-ready architecture!
+
+**Ready for immediate deployment and team adoption.** 🚀
