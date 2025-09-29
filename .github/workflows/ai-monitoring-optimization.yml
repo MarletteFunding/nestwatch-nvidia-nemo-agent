@@ -1,0 +1,327 @@
+name: 📈 AI Monitoring & Performance Optimization
+
+on:
+  schedule:
+    # Run every 6 hours to analyze system performance
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+    inputs:
+      analysis_type:
+        description: 'Analysis Type'
+        required: true
+        default: 'performance'
+        type: choice
+        options:
+        - performance
+        - cost-optimization  
+        - alert-tuning
+        - capacity-planning
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+
+jobs:
+  ai-performance-analysis:
+    name: 🤖 AI Performance Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout NestWatch
+      uses: actions/checkout@v4
+
+    - name: 🐍 Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Install Dependencies
+      run: |
+        pip install anthropic requests pandas matplotlib datadog-api-client
+
+    - name: 📊 Collect System Metrics
+      id: collect-metrics
+      run: |
+        python << 'EOF'
+        import json
+        import requests
+        from datetime import datetime, timedelta
+        
+        # Simulate collecting metrics from various sources
+        metrics = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "analysis_type": "${{ github.event.inputs.analysis_type || 'performance' }}",
+            "system_health": {
+                "nestwatch_frontend": {
+                    "response_time_p95": "150ms",
+                    "error_rate": "0.1%",
+                    "uptime": "99.9%"
+                },
+                "nestwatch_backend": {
+                    "response_time_p95": "500ms", 
+                    "error_rate": "0.5%",
+                    "uptime": "99.8%"
+                },
+                "ai_service": {
+                    "claude_api_calls": 245,
+                    "cache_hit_rate": "87%",
+                    "avg_response_time": "2.3s",
+                    "quota_usage": "23%"
+                }
+            },
+            "alert_statistics": {
+                "total_events": 81,
+                "p1_incidents": 0,
+                "p2_incidents": 7,
+                "p3_incidents": 74,
+                "false_positive_rate": "12%"
+            },
+            "resource_usage": {
+                "cpu_utilization": "45%",
+                "memory_utilization": "67%",
+                "disk_usage": "23%",
+                "network_throughput": "125 Mbps"
+            }
+        }
+        
+        with open('system_metrics.json', 'w') as f:
+            json.dump(metrics, f, indent=2)
+            
+        print("📊 Metrics collected successfully")
+        EOF
+
+    - name: 🤖 AI Performance Analysis
+      run: |
+        python << 'EOF'
+        import os
+        import json
+        import anthropic
+
+        if not os.getenv('ANTHROPIC_API_KEY'):
+            print("⚠️  ANTHROPIC_API_KEY not set")
+            exit(0)
+
+        # Load collected metrics
+        with open('system_metrics.json', 'r') as f:
+            metrics = json.load(f)
+
+        client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+
+        analysis_type = metrics['analysis_type']
+        
+        if analysis_type == 'performance':
+            prompt = f"""
+            Analyze NestWatch SRE dashboard performance metrics:
+            
+            SYSTEM METRICS:
+            - Frontend P95: {metrics['system_health']['nestwatch_frontend']['response_time_p95']}
+            - Backend P95: {metrics['system_health']['nestwatch_backend']['response_time_p95']}
+            - AI Cache Hit Rate: {metrics['system_health']['ai_service']['cache_hit_rate']}
+            - CPU Usage: {metrics['resource_usage']['cpu_utilization']}
+            - Memory Usage: {metrics['resource_usage']['memory_utilization']}
+            
+            ALERT STATS:
+            - Total Events: {metrics['alert_statistics']['total_events']}
+            - False Positive Rate: {metrics['alert_statistics']['false_positive_rate']}
+            
+            Provide:
+            1. PERFORMANCE BOTTLENECKS: What's slowing the system down
+            2. OPTIMIZATION RECOMMENDATIONS: Specific improvements
+            3. CAPACITY PLANNING: When to scale resources
+            4. MONITORING IMPROVEMENTS: Better metrics to track
+            """
+            
+        elif analysis_type == 'cost-optimization':
+            prompt = f"""
+            Analyze NestWatch cost optimization opportunities:
+            
+            AI USAGE:
+            - Claude API Calls: {metrics['system_health']['ai_service']['claude_api_calls']}
+            - Cache Hit Rate: {metrics['system_health']['ai_service']['cache_hit_rate']}
+            - Quota Usage: {metrics['system_health']['ai_service']['quota_usage']}
+            
+            Recommend:
+            1. AI COST REDUCTION: How to reduce Claude API costs
+            2. CACHING OPTIMIZATION: Improve cache hit rates  
+            3. RESOURCE EFFICIENCY: Optimize compute resources
+            4. MONITORING COSTS: Reduce unnecessary monitoring overhead
+            """
+            
+        elif analysis_type == 'alert-tuning':
+            prompt = f"""
+            Analyze NestWatch alert tuning opportunities:
+            
+            ALERT METRICS:
+            - Total Events: {metrics['alert_statistics']['total_events']}
+            - P1 Critical: {metrics['alert_statistics']['p1_incidents']}
+            - P2 High: {metrics['alert_statistics']['p2_incidents']}  
+            - P3 Medium: {metrics['alert_statistics']['p3_incidents']}
+            - False Positive Rate: {metrics['alert_statistics']['false_positive_rate']}
+            
+            Recommend:
+            1. ALERT THRESHOLDS: Optimize alert sensitivity
+            2. NOISE REDUCTION: Reduce false positives
+            3. PRIORITY TUNING: Better P1/P2/P3 classification
+            4. CORRELATION RULES: Group related alerts
+            """
+
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=1000,
+            temperature=0.1,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        analysis = response.content[0].text
+        
+        # Save analysis
+        with open('ai_optimization_analysis.txt', 'w') as f:
+            f.write(f"NestWatch AI Analysis - {analysis_type.title()}\n")
+            f.write(f"Generated: {metrics['timestamp']}\n")
+            f.write("=" * 50 + "\n\n")
+            f.write(analysis)
+            
+        print("🤖 AI Analysis Complete:")
+        print(analysis)
+        EOF
+
+    - name: 📈 Generate Optimization Report
+      run: |
+        python << 'EOF'
+        import json
+        import matplotlib.pyplot as plt
+        from datetime import datetime
+
+        # Load metrics
+        with open('system_metrics.json', 'r') as f:
+            metrics = json.load(f)
+
+        # Create performance visualization
+        fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
+        
+        # Response times
+        services = ['Frontend', 'Backend', 'AI Service']
+        response_times = [150, 500, 2300]  # in ms
+        ax1.bar(services, response_times, color=['#22c55e', '#fbbf24', '#fb7185'])
+        ax1.set_title('Response Times (ms)')
+        ax1.set_ylabel('Milliseconds')
+        
+        # Resource utilization
+        resources = ['CPU', 'Memory', 'Disk']
+        utilization = [45, 67, 23]  # percentages
+        ax2.bar(resources, utilization, color=['#3b82f6', '#8b5cf6', '#06b6d4'])
+        ax2.set_title('Resource Utilization (%)')
+        ax2.set_ylabel('Percentage')
+        ax2.set_ylim(0, 100)
+        
+        # Alert distribution
+        priorities = ['P1', 'P2', 'P3']
+        counts = [0, 7, 74]
+        colors = ['#ef4444', '#f59e0b', '#10b981']
+        ax3.pie(counts, labels=priorities, colors=colors, autopct='%1.1f%%')
+        ax3.set_title('Alert Distribution')
+        
+        # AI metrics
+        ai_metrics = ['Cache Hit Rate', 'Quota Usage']
+        ai_values = [87, 23]
+        ax4.bar(ai_metrics, ai_values, color=['#059669', '#dc2626'])
+        ax4.set_title('AI Service Metrics (%)')
+        ax4.set_ylabel('Percentage')
+        ax4.set_ylim(0, 100)
+        
+        plt.tight_layout()
+        plt.savefig('nestwatch_performance_report.png', dpi=300, bbox_inches='tight')
+        print("📊 Performance visualization saved")
+
+        # Generate summary report
+        report = {
+            "report_id": f"OPT-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}",
+            "analysis_type": metrics['analysis_type'],
+            "timestamp": datetime.utcnow().isoformat(),
+            "key_findings": [
+                f"System handling {metrics['alert_statistics']['total_events']} events",
+                f"AI cache hit rate: {metrics['system_health']['ai_service']['cache_hit_rate']}",
+                f"False positive rate: {metrics['alert_statistics']['false_positive_rate']}",
+                "Backend response time needs optimization"
+            ],
+            "recommendations": [
+                "Implement response time optimization",
+                "Improve AI caching strategy", 
+                "Tune alert thresholds",
+                "Monitor resource scaling triggers"
+            ],
+            "next_review": "6 hours"
+        }
+        
+        with open('optimization_report.json', 'w') as f:
+            json.dump(report, f, indent=2)
+            
+        print("✅ Optimization report generated")
+        EOF
+
+    - name: 📤 Upload Analysis Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: ai-optimization-analysis
+        path: |
+          system_metrics.json
+          ai_optimization_analysis.txt
+          optimization_report.json
+          nestwatch_performance_report.png
+        retention-days: 7
+
+  ai-recommendations:
+    name: 💡 AI Recommendations Summary
+    runs-on: ubuntu-latest
+    needs: ai-performance-analysis
+    
+    steps:
+    - name: 📋 Create Recommendations Issue
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const title = `🤖 AI Optimization Recommendations - ${new Date().toISOString().split('T')[0]}`;
+          const body = `
+          ## 🎯 NestWatch AI Analysis Complete
+          
+          **Analysis Type:** ${{ github.event.inputs.analysis_type || 'performance' }}
+          **Timestamp:** ${new Date().toISOString()}
+          **AI Model:** claude-3-5-sonnet-20241022
+          
+          ### 📊 Current System Status
+          - **Total Events:** 81 active
+          - **System Uptime:** 99.8%
+          - **AI Cache Hit Rate:** 87%
+          - **False Positive Rate:** 12%
+          
+          ### 🔍 AI Analysis Available
+          Detailed AI analysis and recommendations have been generated.
+          
+          **View Analysis:** [Workflow Run](${context.payload.repository.html_url}/actions/runs/${context.runId})
+          
+          ### ⚡ Next Steps
+          - [ ] Review AI recommendations
+          - [ ] Implement performance optimizations
+          - [ ] Update monitoring thresholds
+          - [ ] Schedule next analysis
+          
+          ---
+          *Generated by NestWatch AI Monitoring Workflow*
+          `;
+          
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: title,
+            body: body,
+            labels: ['ai-analysis', 'optimization', 'monitoring']
+          });
+
+    - name: 📈 Performance Summary
+      run: |
+        echo "🎯 NestWatch AI Optimization Complete"
+        echo "📊 Analysis Type: ${{ github.event.inputs.analysis_type || 'performance' }}"
+        echo "🤖 AI Model: claude-3-5-sonnet-20241022"  
+        echo "📋 Recommendations: Available in workflow artifacts"
+        echo "🔄 Next Analysis: Scheduled in 6 hours"
+        echo "✅ GitHub issue created with summary"

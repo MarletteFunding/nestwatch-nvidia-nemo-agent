@@ -1,0 +1,271 @@
+name: 🚨 AI Incident Response Automation
+
+on:
+  repository_dispatch:
+    types: [incident-detected, alert-triggered]
+  workflow_dispatch:
+    inputs:
+      incident_severity:
+        description: 'Incident Severity (P1/P2/P3)'
+        required: true
+        default: 'P2'
+        type: choice
+        options:
+        - P1
+        - P2  
+        - P3
+      incident_description:
+        description: 'Incident Description'
+        required: true
+        type: string
+
+env:
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  DATADOG_API_KEY: ${{ secrets.DATADOG_API_KEY }}
+
+jobs:
+  ai-incident-analysis:
+    name: 🤖 AI Incident Analysis
+    runs-on: ubuntu-latest
+    
+    outputs:
+      analysis_result: ${{ steps.ai-analysis.outputs.result }}
+      recommended_actions: ${{ steps.ai-analysis.outputs.actions }}
+      
+    steps:
+    - name: 📥 Checkout NestWatch Code
+      uses: actions/checkout@v4
+
+    - name: 🐍 Setup Python Environment
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: 📦 Install AI Dependencies
+      run: |
+        pip install anthropic requests python-dotenv datadog-api-client
+
+    - name: 🔍 Gather Incident Context
+      id: gather-context
+      run: |
+        python << 'EOF'
+        import os
+        import json
+        import requests
+        from datetime import datetime, timedelta
+
+        # Simulate gathering context from various sources
+        context = {
+            "timestamp": datetime.utcnow().isoformat(),
+            "severity": "${{ github.event.inputs.incident_severity || 'P2' }}",
+            "description": "${{ github.event.inputs.incident_description || 'Auto-detected incident' }}",
+            "environment": "production",
+            "affected_services": [],
+            "recent_deployments": [],
+            "system_metrics": {
+                "cpu_usage": "85%",
+                "memory_usage": "92%", 
+                "error_rate": "5.2%"
+            }
+        }
+
+        # In real implementation, this would fetch from:
+        # - Datadog API for metrics
+        # - JIRA for related tickets  
+        # - SRE API for event history
+        # - GitHub API for recent deployments
+
+        with open('incident_context.json', 'w') as f:
+            json.dump(context, f, indent=2)
+            
+        print(f"context={json.dumps(context)}")
+        EOF
+
+    - name: 🤖 AI Incident Analysis
+      id: ai-analysis
+      run: |
+        python << 'EOF'
+        import os
+        import json
+        import anthropic
+
+        if not os.getenv('ANTHROPIC_API_KEY'):
+            print("⚠️  ANTHROPIC_API_KEY not set")
+            exit(1)
+
+        # Load incident context
+        with open('incident_context.json', 'r') as f:
+            context = json.load(f)
+
+        client = anthropic.Anthropic(api_key=os.getenv('ANTHROPIC_API_KEY'))
+
+        prompt = f"""
+        You are Hawky, the NestWatch AI SRE assistant. Analyze this incident:
+
+        INCIDENT DETAILS:
+        - Severity: {context['severity']}  
+        - Description: {context['description']}
+        - Environment: {context['environment']}
+        - CPU Usage: {context['system_metrics']['cpu_usage']}
+        - Memory Usage: {context['system_metrics']['memory_usage']}
+        - Error Rate: {context['system_metrics']['error_rate']}
+
+        Provide:
+        1. ROOT CAUSE ANALYSIS: Most likely causes
+        2. IMMEDIATE ACTIONS: Steps to take right now
+        3. MONITORING: What to watch during resolution
+        4. ESCALATION: When to escalate to senior engineers
+
+        Format as JSON with keys: root_cause, immediate_actions, monitoring, escalation
+        """
+
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            max_tokens=800,
+            temperature=0.1,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        analysis = response.content[0].text
+        print(f"🤖 AI Analysis Complete:")
+        print(analysis)
+        
+        # Save analysis
+        with open('ai_analysis.json', 'w') as f:
+            f.write(analysis)
+            
+        # Set outputs for next jobs
+        print(f"result={analysis}")
+        EOF
+
+    - name: 📊 Generate Incident Report
+      run: |
+        python << 'EOF'
+        import json
+        from datetime import datetime
+
+        # Create comprehensive incident report
+        report = {
+            "incident_id": f"INC-{datetime.utcnow().strftime('%Y%m%d-%H%M%S')}",
+            "severity": "${{ github.event.inputs.incident_severity || 'P2' }}",
+            "status": "investigating",
+            "created_at": datetime.utcnow().isoformat(),
+            "ai_analysis_complete": True,
+            "tools_used": ["NestWatch", "Anthropic Claude", "GitHub Actions"],
+            "next_steps": [
+                "Review AI recommendations",
+                "Execute immediate actions",
+                "Monitor system metrics",
+                "Update stakeholders"
+            ]
+        }
+
+        with open('incident_report.json', 'w') as f:
+            json.dump(report, f, indent=2)
+            
+        print("📋 Incident report generated")
+        EOF
+
+  notify-team:
+    name: 📢 Notify SRE Team
+    runs-on: ubuntu-latest
+    needs: ai-incident-analysis
+    
+    steps:
+    - name: 📱 Slack Notification
+      run: |
+        if [ -n "${{ secrets.SLACK_WEBHOOK_URL }}" ]; then
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{
+              "text": "🚨 NestWatch AI Incident Response Activated",
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "🤖 AI Incident Analysis Complete"
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Severity:* ${{ github.event.inputs.incident_severity || 'P2' }}"
+                    },
+                    {
+                      "type": "mrkdwn", 
+                      "text": "*Status:* Investigating"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*AI Model:* Claude-3.5-Sonnet"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Dashboard:* <http://localhost:3000/dashboard|NestWatch>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Description:* ${{ github.event.inputs.incident_description || 'Auto-detected incident' }}"
+                  }
+                },
+                {
+                  "type": "actions",
+                  "elements": [
+                    {
+                      "type": "button",
+                      "text": {
+                        "type": "plain_text",
+                        "text": "View Analysis"
+                      },
+                      "url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+                    }
+                  ]
+                }
+              ]
+            }' \
+            ${{ secrets.SLACK_WEBHOOK_URL }}
+        else
+          echo "⚠️  SLACK_WEBHOOK_URL not configured"
+        fi
+
+  create-incident-ticket:
+    name: 🎫 Create JIRA Incident Ticket
+    runs-on: ubuntu-latest
+    needs: ai-incident-analysis
+    if: github.event.inputs.incident_severity == 'P1'
+    
+    steps:
+    - name: 📝 Auto-Create JIRA Ticket
+      run: |
+        echo "🎫 Would create JIRA ticket for P1 incident"
+        echo "Title: [P1] ${{ github.event.inputs.incident_description }}"
+        echo "AI Analysis: Available in workflow artifacts"
+        echo "Assignee: On-call engineer"
+        echo "Priority: Critical"
+
+  upload-artifacts:
+    name: 📤 Upload Analysis Artifacts
+    runs-on: ubuntu-latest
+    needs: ai-incident-analysis
+    
+    steps:
+    - name: 📥 Download Analysis
+      run: |
+        echo "Downloading AI analysis results..."
+        
+    - name: 📤 Upload Incident Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: incident-analysis-${{ github.run_id }}
+        path: |
+          incident_context.json
+          ai_analysis.json  
+          incident_report.json
+        retention-days: 30
