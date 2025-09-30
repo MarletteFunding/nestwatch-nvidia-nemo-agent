@@ -19,18 +19,28 @@ A production-ready **enterprise-grade multi-provider AI** SRE (Site Reliability 
 
 ### 🤖 **Enterprise AI Capabilities**
 - **4 AI Providers**: AWS Bedrock, Local NeMo, Anthropic Claude, OpenAI GPT
-- **Intelligent Routing**: Smart provider selection based on request type
+- **Intelligent Routing**: Smart provider selection based on request type and data sensitivity
 - **Graceful Fallbacks**: System continues working even when providers fail
-- **Corporate Compatible**: Works in Zscaler/proxy environments
-- **Cost Optimization**: Built-in usage tracking and quota management
+- **Corporate Compatible**: Works in Zscaler/proxy environments with SSL handling
+- **Cost Optimization**: Built-in usage tracking, quota management, and cost estimation
+- **Security Routing**: Route sensitive requests to local processing automatically
+- **Provider Health Monitoring**: Real-time status tracking for all AI providers
+- **Usage Analytics**: Comprehensive cost and performance monitoring across providers
 
 ### 📊 **Core SRE Capabilities** 
 - **Real-time Events**: Monitor 104+ active production events with priority filtering
-- **AI-Powered Analysis**: Multi-provider intelligent SRE assistance
-- **NestWatch Design**: Beautiful modern UI with light/dark themes
+- **AI-Powered Analysis**: Multi-provider intelligent SRE assistance with automatic failover
+- **NestWatch Design**: Beautiful modern UI with light/dark themes and custom iconography
 - **FastAPI Backend**: High-performance Python backend with comprehensive APIs
-- **Next.js Frontend**: Modern React frontend with real-time updates
+- **Next.js Frontend**: Modern React frontend with real-time updates and responsive design
 - **Multi-Source Integration**: SRE API, JIRA, and Datadog integrations
+
+### 🏢 **Enterprise & Corporate Features**
+- **Zscaler Compatibility**: Automatic proxy detection and SSL certificate handling
+- **Corporate Installation**: Automated scripts for enterprise environments
+- **Offline Capabilities**: Local model processing for sensitive corporate data
+- **Professional Organization**: Structured documentation and deployment automation
+- **Production Ready**: Complete enterprise deployment guides and health monitoring
 
 ### SRE-Specific Features
 - **Priority Filtering** - P1 (Critical), P2 (High), P3 (Medium) event classification
@@ -151,12 +161,39 @@ curl http://localhost:8000/api/events/real?priority=P1&limit=100
 curl http://localhost:8000/api/events/real?priority=P1&source=datadog&limit=100
 ```
 
-#### AI Integration
+#### Multi-Provider AI Integration
 ```bash
-# AI health check
+# Multi-provider health check
+curl http://localhost:8000/api/v1/providers/health
+
+# Provider usage statistics
+curl http://localhost:8000/api/v1/providers/usage
+
+# Smart AI generation with automatic provider routing
+curl -X POST http://localhost:8000/api/v1/providers/generate \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Analyze this SRE incident: High CPU usage on web servers",
+    "request_type": "incident_analysis",
+    "max_tokens": 300
+  }'
+
+# Enhanced SRE analysis with multi-provider fallbacks
+curl -X POST http://localhost:8000/api/v1/providers/sre-analysis \
+  -H "Content-Type: application/json" \
+  -d '{
+    "query": "Database connection timeout investigation",
+    "context": "production incident",
+    "priority": "P1"
+  }'
+```
+
+#### Legacy AI Integration (Still Supported)
+```bash
+# Legacy AI health check
 curl http://localhost:8000/api/v1/nemo/health
 
-# Dashboard insights
+# Legacy dashboard insights
 curl -X POST http://localhost:8000/api/v1/nemo/dashboard-insights \
   -H "Content-Type: application/json" \
   -d '{"events": [], "context": "SRE monitoring"}'
@@ -166,10 +203,45 @@ curl -X POST http://localhost:8000/api/v1/nemo/dashboard-insights \
 
 ### Environment Variables
 
+#### Multi-Provider AI Configuration
 ```bash
-# AI Configuration (Optional)
+# Provider Priority (comma-separated)
+PROVIDER_PRIORITY=bedrock,anthropic,nemo_local,openai
+
+# AWS Bedrock Configuration
+ENABLE_BEDROCK=true
+AWS_REGION=us-east-1
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20241022-v2:0
+
+# Anthropic Configuration
 ANTHROPIC_API_KEY=your_anthropic_key_here
 ANTHROPIC_MODEL=claude-3-5-sonnet-20241022
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_key_here
+OPENAI_MODEL=gpt-3.5-turbo
+
+# Local NeMo Configuration
+ENABLE_LOCAL_NEMO=false
+NEMO_MODEL_PATH=microsoft/DialoGPT-medium
+NEMO_DEVICE=auto
+
+# Intelligent Routing
+SENSITIVE_PROVIDER=nemo_local
+DASHBOARD_PROVIDER=bedrock
+INCIDENT_PROVIDER=anthropic
+BATCH_PROVIDER=nemo_local
+
+# Corporate Environment
+CORPORATE_MODE=false
+PYTHONHTTPSVERIFY=1
+```
+
+#### Legacy Configuration (Still Supported)
+```bash
+# Legacy AI Configuration
 ANTHROPIC_TEMPERATURE=0.0
 ANTHROPIC_MAX_TOKENS=600
 
@@ -181,6 +253,20 @@ LLM_CACHE_TTL_SEC=300              # Cache TTL (5 minutes)
 LLM_CB_MINUTES=30                  # Circuit breaker timeout
 LLM_RPS=0.5                        # Rate limiting (0.5 RPS)
 LLM_BURST=2                        # Burst capacity
+```
+
+#### Quota and Cost Management
+```bash
+# Multi-Provider Quota Controls
+MAX_TOKENS_PER_REQUEST=600
+MAX_REQUESTS_PER_MINUTE=60
+MAX_COST_PER_HOUR=10.0
+ENABLE_COST_TRACKING=true
+
+# Fallback Configuration
+ENABLE_FALLBACKS=true
+MAX_PROVIDER_RETRIES=3
+RETRY_DELAY_SECONDS=1.0
 ```
 
 ## 💰 LLM Quota Controls
@@ -220,29 +306,48 @@ curl http://localhost:8000/api/v1/sre/usage
 ## 📁 Project Structure
 
 ```
-├── backend/
-│   ├── app.py                    # FastAPI backend server (1,889 lines)
-│   ├── requirements.txt          # Python dependencies
+├── 📚 docs/                      # Professional documentation suite
+│   ├── setup/                    # Installation and setup guides
+│   ├── corporate/                # Enterprise deployment guides
+│   └── deployment/               # Production deployment documentation
+├── 🛠️ scripts/                  # Organized automation scripts
+│   ├── setup/                    # Setup and configuration scripts
+│   ├── corporate/                # Corporate environment tools
+│   └── demo/                     # Demo and testing scripts
+├── 🔧 backend/
+│   ├── app.py                    # FastAPI backend server (2,091 lines)
+│   ├── requirements.txt          # Corporate-friendly dependencies
 │   └── venv/                     # Virtual environment
-├── pages/
+├── 🤖 plugins/                   # Enhanced AI system
+│   ├── multi_provider_llm.py     # Multi-provider AI engine (834 lines)
+│   ├── nemo_llm_provider.py      # Enhanced NeMo provider (650 lines)
+│   ├── llm_cache.py              # Response caching
+│   ├── llm_circuit.py            # Circuit breaker
+│   └── sre_tools_unified.py      # SRE tools integration
+├── ⚙️ config/                    # Configuration management
+│   ├── multi_provider_config.py  # Multi-provider settings (186 lines)
+│   ├── anthropic_config.py       # Anthropic configuration
+│   └── openai_config.py          # OpenAI configuration
+├── 🎨 models/                    # AI model configurations
+│   ├── corporate_config.json     # Corporate-safe model settings
+│   └── offline_config.json       # Offline model configuration
+├── 🌐 pages/
 │   ├── dashboard.tsx             # Main dashboard (1,349 lines)
 │   ├── _app.tsx                  # Next.js app wrapper
 │   └── api/events/real.ts        # Event API endpoint
-├── plugins/
-│   ├── nemo_llm_provider.py      # Anthropic Claude integration
-│   ├── llm_cache.py              # Response caching
-│   ├── llm_circuit.py            # Circuit breaker
-│   └── rate_limit.py             # Rate limiting
-├── styles/
+├── 🎨 styles/
 │   ├── globals.css               # Global styles
 │   ├── tokens/nestwatch.css      # Design system tokens
 │   └── components/nestwatch.css  # Component styles
-├── ui/
+├── 🧩 ui/
 │   ├── icons/nestwatch/          # Custom icon system
 │   └── fab/HawkyFab.tsx          # AI assistant FAB
-├── components/
-│   └── SRE/                      # React components
-└── public/images/                # Static assets
+├── 📦 components/
+│   └── SRE/AIAssistant.tsx       # Enhanced AI assistant
+├── 📋 Environment Templates
+│   ├── multi-provider.env.example # Standard multi-provider config
+│   └── zscaler.env.example       # Corporate environment config
+└── 📊 public/images/             # Static assets and logos
 ```
 
 ## 🔒 Security & Best Practices
@@ -390,6 +495,30 @@ curl http://localhost:8000/api/v1/nemo/health
 
 ---
 
-## 🎯 The NestWatch NVIDIA NeMo Agent delivers a complete AI-powered SRE operations platform with real production data, intelligent analysis, and enterprise-ready architecture!
+## 🎯 NestWatch v2.0: Enterprise Multi-Provider AI SRE Toolkit
 
-**Ready for immediate deployment and team adoption.** 🚀
+**The NestWatch Multi-Provider AI SRE Toolkit delivers a complete enterprise-grade operations platform with:**
+
+### 🏆 **What Makes v2.0 Special**
+- **4 AI Providers** with intelligent routing and graceful fallbacks
+- **Enterprise Compatibility** with Zscaler/corporate environment support
+- **Production Ready** with comprehensive documentation and automation
+- **Cost Optimized** with usage tracking and quota management
+- **Security Focused** with local processing options for sensitive data
+
+### 🚀 **Deployment Options**
+- **Standard**: `npm run dev` + `python backend/app.py`
+- **Corporate**: Use `scripts/corporate/install_corporate.sh`
+- **Production**: Follow `docs/deployment/PRODUCTION_READY_GUIDE.md`
+
+### 📊 **Current Status**
+- **✅ 104+ Live Events** streaming in real-time
+- **✅ Multi-Provider AI** with 4 providers operational
+- **✅ Enterprise Ready** with corporate environment support
+- **✅ Production Deployed** with comprehensive monitoring
+
+**Transform your SRE operations with enterprise-grade multi-provider AI intelligence!** 🚀
+
+---
+
+*Ready for immediate deployment and enterprise adoption.* 🎉
