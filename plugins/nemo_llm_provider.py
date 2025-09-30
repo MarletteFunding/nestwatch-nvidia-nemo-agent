@@ -66,6 +66,12 @@ class SRELLMProvider:
     
     def __init__(self, model_name: str = "gpt-3.5-turbo", use_openai: bool = True, use_anthropic: bool = False):
         self.model_name = model_name
+        self.corporate_mode = os.getenv('CORPORATE_MODE', 'false').lower() == 'true'
+        
+        # Setup corporate SSL if needed
+        if self.corporate_mode:
+            self._setup_corporate_ssl()
+        
         # Ensure mutual exclusivity - Anthropic takes priority
         if use_anthropic and ANTHROPIC_AVAILABLE:
             self.use_openai = False
@@ -82,6 +88,22 @@ class SRELLMProvider:
         self.max_tokens = int(os.getenv("LLM_MAX_TOKENS", "600"))
         self.temperature = 0.0  # Deterministic output
         self.n = 1  # Single response
+    
+    def _setup_corporate_ssl(self):
+        """Setup SSL configuration for corporate environments"""
+        logger.info("🔒 Configuring SSL for corporate environment")
+        
+        # Disable SSL verification for corporate proxies if needed
+        if os.getenv('PYTHONHTTPSVERIFY', '1') == '0':
+            import urllib3
+            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            import ssl
+            ssl._create_default_https_context = ssl._create_unverified_context
+            logger.warning("⚠️  SSL verification disabled for corporate proxy")
+        
+        # Set Hugging Face to handle SSL issues
+        os.environ['HF_HUB_OFFLINE'] = '0'
+        os.environ['TRANSFORMERS_OFFLINE'] = '0'
         
         # Handle device initialization based on torch availability
         if TORCH_AVAILABLE:

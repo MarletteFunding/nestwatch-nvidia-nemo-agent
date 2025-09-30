@@ -250,64 +250,144 @@ calculator = SafeCalculator()
 # Enhanced SRE tools are not needed since we have direct API integrations
 ENHANCED_TOOLS_AVAILABLE = False
 
-# Initialize NeMo LLM Provider (OpenAI by default, Anthropic as alternative)
+# Initialize Multi-Provider LLM System (Enhanced with Bedrock + NeMo + Anthropic + OpenAI)
 try:
-    from nemo_llm_provider import SRELLMProvider, NeMoEnhancedSRE
+    # Try new multi-provider system first
+    from multi_provider_llm import MultiProviderLLM, SRELLMProvider, NeMoEnhancedSRE
     import sys
     sys.path.append(str(Path(__file__).parent.parent / "config"))
-    from openai_config import get_openai_config, validate_openai_config, get_recommended_model
+    from multi_provider_config import MultiProviderConfig
     
-    # Check for Anthropic configuration first
+    # Initialize multi-provider system
+    logger.info("🚀 Initializing Enhanced Multi-Provider AI System...")
+    
+    # Validate configuration - but don't fail if no providers configured
+    config_validation = MultiProviderConfig.validate_config()
+    if not config_validation['valid']:
+        logger.warning(f"⚠️  Multi-provider configuration issues: {config_validation['errors']}")
+        logger.info("🔄 Falling back to legacy single-provider system")
+        raise ImportError("Multi-provider system not properly configured")
+    
+    if config_validation['warnings']:
+        for warning in config_validation['warnings']:
+            logger.warning(f"⚠️  {warning}")
+    
+    logger.info(f"✅ {config_validation['providers_configured']} providers configured")
+    
+    # Create multi-provider LLM
+    multi_provider_llm = MultiProviderLLM()
+    
+    # Create backward-compatible SRE LLM Provider
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
     use_anthropic = bool(anthropic_api_key)
+    model_name = os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
     
-    if use_anthropic:
-        # Use Anthropic Claude
-        model_name = os.getenv("ANTHROPIC_MODEL", "claude-3-sonnet-20240229")
-        nemo_llm = SRELLMProvider(model_name, use_openai=False, use_anthropic=True)
-        logger.info(f"NeMo LLM Provider configured for Anthropic Claude model: {model_name}")
-    else:
-        # Get OpenAI configuration
-        openai_config = get_openai_config()
-        is_valid, message = validate_openai_config()
-        
-        if is_valid:
-            # Use OpenAI with configured model
-            model_name = openai_config["model"]
-            nemo_llm = SRELLMProvider(model_name, use_openai=True, use_anthropic=False)
-            logger.info(f"NeMo LLM Provider configured for OpenAI model: {model_name}")
-        else:
-            # Fall back to local model
-            logger.warning(f"OpenAI not configured: {message}. Falling back to local model.")
-            nemo_llm = SRELLMProvider("microsoft/DialoGPT-medium", use_openai=False, use_anthropic=False)
-    
+    nemo_llm = SRELLMProvider(model_name, use_openai=False, use_anthropic=use_anthropic)
     nemo_enhanced_sre = None
     NEMO_LLM_AVAILABLE = False
-    logger.info("NeMo LLM Provider imported successfully")
+    
+    logger.info("✅ Multi-Provider LLM System imported successfully")
+    logger.info(f"🎯 Provider Priority: {MultiProviderConfig.get_provider_priority()}")
+    
 except ImportError as e:
-    logger.warning(f"NeMo LLM Provider not available: {e}")
-    nemo_llm = None
-    nemo_enhanced_sre = None
-    NEMO_LLM_AVAILABLE = False
+    logger.warning(f"Multi-Provider system not available, falling back to legacy: {e}")
+    
+    # Fallback to original single-provider system
+    try:
+        from nemo_llm_provider import SRELLMProvider, NeMoEnhancedSRE
+        import sys
+        sys.path.append(str(Path(__file__).parent.parent / "config"))
+        from openai_config import get_openai_config, validate_openai_config, get_recommended_model
+        
+        # Check for Anthropic configuration first
+        anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
+        use_anthropic = bool(anthropic_api_key)
+        
+        if use_anthropic:
+            # Use Anthropic Claude
+            model_name = os.getenv("ANTHROPIC_MODEL", "claude-3-5-sonnet-20241022")
+            nemo_llm = SRELLMProvider(model_name, use_openai=False, use_anthropic=True)
+            logger.info(f"Legacy NeMo LLM Provider configured for Anthropic Claude model: {model_name}")
+        else:
+            # Get OpenAI configuration
+            openai_config = get_openai_config()
+            is_valid, message = validate_openai_config()
+            
+            if is_valid:
+                # Use OpenAI with configured model
+                model_name = openai_config["model"]
+                nemo_llm = SRELLMProvider(model_name, use_openai=True, use_anthropic=False)
+                logger.info(f"Legacy NeMo LLM Provider configured for OpenAI model: {model_name}")
+            else:
+                # Fall back to local model
+                logger.warning(f"OpenAI not configured: {message}. Falling back to local model.")
+                nemo_llm = SRELLMProvider("microsoft/DialoGPT-medium", use_openai=False, use_anthropic=False)
+        
+        nemo_enhanced_sre = None
+        NEMO_LLM_AVAILABLE = False
+        multi_provider_llm = None
+        logger.info("Legacy NeMo LLM Provider imported successfully")
+        
+    except ImportError as e:
+        logger.warning(f"NeMo LLM Provider not available: {e}")
+        nemo_llm = None
+        nemo_enhanced_sre = None
+        NEMO_LLM_AVAILABLE = False
+        multi_provider_llm = None
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize NeMo LLM on startup"""
-    global nemo_llm, nemo_enhanced_sre, NEMO_LLM_AVAILABLE
+    """Initialize Multi-Provider LLM system on startup"""
+    global nemo_llm, nemo_enhanced_sre, NEMO_LLM_AVAILABLE, multi_provider_llm
     
-    if nemo_llm:
+    # Initialize multi-provider system if available
+    if multi_provider_llm:
+        try:
+            logger.info("🚀 Initializing Multi-Provider AI System...")
+            initialization_results = await multi_provider_llm.initialize()
+            
+            # Log initialization results
+            for provider, success in initialization_results.items():
+                if success:
+                    logger.info(f"✅ {provider} provider initialized successfully")
+                else:
+                    logger.warning(f"⚠️  {provider} provider failed to initialize")
+            
+            # Check if any provider is available
+            if any(initialization_results.values()):
+                nemo_enhanced_sre = NeMoEnhancedSRE(multi_provider_llm)
+                NEMO_LLM_AVAILABLE = True
+                logger.info("✅ Multi-Provider AI System ready")
+                
+                # Log provider priority and availability
+                health = multi_provider_llm.health_check()
+                logger.info(f"🎯 Available providers: {list(health['providers'].keys())}")
+                logger.info(f"📋 Provider priority: {health['priority']}")
+            else:
+                logger.error("❌ No AI providers available in multi-provider system")
+                NEMO_LLM_AVAILABLE = False
+                
+        except Exception as e:
+            logger.error(f"❌ Error initializing Multi-Provider system: {e}")
+            NEMO_LLM_AVAILABLE = False
+    
+    # Fallback to legacy single-provider system
+    elif nemo_llm:
         try:
             success = nemo_llm.initialize()
             if success:
                 nemo_enhanced_sre = NeMoEnhancedSRE(nemo_llm)
                 NEMO_LLM_AVAILABLE = True
-                logger.info("✅ NeMo LLM Provider initialized successfully")
+                logger.info("✅ Legacy NeMo LLM Provider initialized successfully")
             else:
-                logger.error("❌ Failed to initialize NeMo LLM Provider")
+                logger.error("❌ Failed to initialize Legacy NeMo LLM Provider")
                 NEMO_LLM_AVAILABLE = False
         except Exception as e:
-            logger.error(f"❌ Error initializing NeMo LLM Provider: {e}")
+            logger.error(f"❌ Error initializing Legacy NeMo LLM Provider: {e}")
             NEMO_LLM_AVAILABLE = False
+    
+    else:
+        logger.warning("⚠️  No AI providers available - AI features will be disabled")
 
 @app.get("/")
 async def root():
@@ -1265,6 +1345,128 @@ async def nemo_health_check():
         return {"health": health, "status": "success"}
     except Exception as e:
         logger.error(f"Error in NeMo health check: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Enhanced Multi-Provider API Endpoints
+@app.get("/api/v1/providers/health")
+async def multi_provider_health():
+    """Get health status of all AI providers."""
+    if not multi_provider_llm:
+        # Fallback to legacy system
+        if NEMO_LLM_AVAILABLE:
+            return {
+                "system": "legacy",
+                "providers": {"anthropic": {"available": True, "initialized": True}},
+                "total_available": 1
+            }
+        else:
+            raise HTTPException(status_code=503, detail="No AI providers available")
+    
+    try:
+        health = multi_provider_llm.health_check()
+        return {
+            "system": "multi-provider",
+            "providers": health["providers"],
+            "priority": health["priority"],
+            "total_available": health["total_available"],
+            "status": "healthy" if health["total_available"] > 0 else "unhealthy"
+        }
+    except Exception as e:
+        logger.error(f"Error in multi-provider health check: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/v1/providers/usage")
+async def get_provider_usage():
+    """Get usage statistics for all providers."""
+    if not multi_provider_llm:
+        return {"system": "legacy", "usage": "not_tracked"}
+    
+    try:
+        usage = multi_provider_llm.get_usage_stats()
+        return {
+            "system": "multi-provider",
+            "usage": usage,
+            "timestamp": time.time()
+        }
+    except Exception as e:
+        logger.error(f"Error getting provider usage: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/v1/providers/generate")
+async def multi_provider_generate(request: dict):
+    """Generate response using intelligent provider selection."""
+    if not NEMO_LLM_AVAILABLE:
+        raise HTTPException(status_code=503, detail="No AI providers available")
+    
+    try:
+        prompt = request.get("prompt", "")
+        request_type = request.get("request_type", "general")
+        context = request.get("context", {})
+        max_tokens = request.get("max_tokens", 600)
+        temperature = request.get("temperature", 0.0)
+        
+        if not prompt:
+            raise HTTPException(status_code=400, detail="Prompt is required")
+        
+        # Use multi-provider system if available
+        if multi_provider_llm:
+            response = await multi_provider_llm.generate_response(
+                prompt=prompt,
+                request_type=request_type,
+                context=context,
+                max_tokens=max_tokens,
+                temperature=temperature
+            )
+            
+            return {
+                "response": response.content,
+                "provider": response.provider.value,
+                "model": response.model,
+                "tokens_used": response.tokens_used,
+                "response_time": response.response_time,
+                "cost_estimate": response.cost_estimate,
+                "status": "success"
+            }
+        else:
+            # Fallback to legacy system
+            response = nemo_llm.generate_response(prompt, max_tokens, temperature)
+            return {
+                "response": response,
+                "provider": "legacy",
+                "model": nemo_llm.model_name,
+                "status": "success"
+            }
+            
+    except Exception as e:
+        logger.error(f"Error in multi-provider generate: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/v1/providers/sre-analysis")
+async def multi_provider_sre_analysis(request: dict):
+    """Perform SRE analysis using the best available provider."""
+    if not NEMO_LLM_AVAILABLE or not nemo_enhanced_sre:
+        raise HTTPException(status_code=503, detail="SRE analysis not available")
+    
+    try:
+        query = request.get("query", "")
+        context = request.get("context", "")
+        
+        if not query:
+            raise HTTPException(status_code=400, detail="Query is required")
+        
+        # Use enhanced SRE analysis (works with both multi-provider and legacy)
+        response = await nemo_enhanced_sre.intelligent_sre_analysis(query, context)
+        
+        return {
+            "analysis": response,
+            "query": query,
+            "context_provided": bool(context),
+            "system": "multi-provider" if multi_provider_llm else "legacy",
+            "status": "success"
+        }
+        
+    except Exception as e:
+        logger.error(f"Error in multi-provider SRE analysis: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.post("/api/v1/nemo/generate")

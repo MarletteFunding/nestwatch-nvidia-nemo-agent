@@ -1,0 +1,30 @@
+{
+  "offline_mode": true,
+  "local_models": {
+    "gpt2": {
+      "path": "./models/gpt2",
+      "type": "causal_lm",
+      "description": "GPT-2 base model for general text generation",
+      "corporate_safe": true,
+      "size_mb": 500
+    },
+    "distilgpt2": {
+      "path": "./models/distilgpt2",
+      "type": "causal_lm",
+      "description": "Lightweight GPT-2 for fast inference",
+      "corporate_safe": true,
+      "size_mb": 350
+    }
+  },
+  "fallback_strategy": [
+    "local_models",
+    "cached_models",
+    "simple_responses"
+  ],
+  "corporate_settings": {
+    "ssl_verify": false,
+    "timeout": 60,
+    "max_retries": 3,
+    "offline_first": true
+  }
+}

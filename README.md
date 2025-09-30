@@ -1,23 +1,36 @@
-# 🎯 NestWatch NVIDIA NeMo Agent
+# 🎯 NestWatch Multi-Provider AI SRE Toolkit
 
 *Vigilant monitoring. Intelligent response. Reliable systems.*
 
-A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dashboard with Anthropic Claude integration, real-time event monitoring, and intelligent incident response capabilities.
+A production-ready **enterprise-grade multi-provider AI** SRE (Site Reliability Engineering) monitoring dashboard with intelligent fallbacks, corporate compatibility, and advanced incident response capabilities.
+
+## ✅ **System Status: FULLY OPERATIONAL**
+
+- **🌐 Dashboard**: http://localhost:3000/dashboard ✅ **ACTIVE**
+- **🔧 Backend API**: http://localhost:8000/ ✅ **ACTIVE** 
+- **🤖 AI Providers**: 4 providers available ✅ **OPERATIONAL**
+- **🏢 Corporate Ready**: Zscaler-compatible ✅ **CONFIGURED**
 
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
 [![GitHub](https://img.shields.io/badge/GitHub-NestWatch-blue)](https://github.com/skerns321/nestwatch-nvidia-nemo-agent)
 [![Events](https://img.shields.io/badge/Live%20Events-104+-orange)]()
 
-## 🚀 Features
+## 🚀 Enhanced Multi-Provider Features
 
-### Core Capabilities
-- 🤖 **AI-Powered Analysis** - Anthropic Claude (claude-3-5-sonnet-20241022) integration for intelligent SRE assistance
-- 📊 **Real-time SRE Events** - Monitor 104+ active production events with priority filtering
-- 🎨 **NestWatch Design System** - Beautiful modern UI with light/dark themes and custom iconography
-- ⚡ **FastAPI Backend** - High-performance Python backend with comprehensive APIs
-- 🌐 **Next.js Frontend** - Modern React frontend with real-time updates and responsive design
-- 🔧 **Multi-Source Integration** - SRE API, JIRA, and Datadog integrations
-- 💰 **LLM Quota Controls** - Advanced caching, circuit breakers, and budget management
+### 🤖 **Enterprise AI Capabilities**
+- **4 AI Providers**: AWS Bedrock, Local NeMo, Anthropic Claude, OpenAI GPT
+- **Intelligent Routing**: Smart provider selection based on request type
+- **Graceful Fallbacks**: System continues working even when providers fail
+- **Corporate Compatible**: Works in Zscaler/proxy environments
+- **Cost Optimization**: Built-in usage tracking and quota management
+
+### 📊 **Core SRE Capabilities** 
+- **Real-time Events**: Monitor 104+ active production events with priority filtering
+- **AI-Powered Analysis**: Multi-provider intelligent SRE assistance
+- **NestWatch Design**: Beautiful modern UI with light/dark themes
+- **FastAPI Backend**: High-performance Python backend with comprehensive APIs
+- **Next.js Frontend**: Modern React frontend with real-time updates
+- **Multi-Source Integration**: SRE API, JIRA, and Datadog integrations
 
 ### SRE-Specific Features
 - **Priority Filtering** - P1 (Critical), P2 (High), P3 (Medium) event classification
@@ -26,6 +39,23 @@ A production-ready AI-powered SRE (Site Reliability Engineering) monitoring dash
 - **AI Assistant "Hawky"** - Contextual AI guidance for incident response
 - **Real-time Updates** - Live event monitoring with auto-refresh
 - **Custom Priority Icons** - Visual severity indicators with geometric shapes
+
+## 📚 **Documentation & Organization**
+
+Your project is now beautifully organized with comprehensive documentation:
+
+### 📖 **Documentation Structure**
+- **[`docs/`](docs/)** - Complete documentation suite
+  - **[Setup Guides](docs/setup/)** - Installation and configuration
+  - **[Corporate Deployment](docs/corporate/)** - Enterprise/Zscaler guides  
+  - **[Production Guides](docs/deployment/)** - Production deployment
+- **[`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md)** - Complete file organization
+- **[`scripts/`](scripts/)** - Organized automation scripts
+
+### 🎯 **Quick Access Documentation**
+- **Production Guide**: [`docs/deployment/PRODUCTION_READY_GUIDE.md`](docs/deployment/PRODUCTION_READY_GUIDE.md)
+- **Corporate Setup**: [`docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md`](docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md)
+- **Multi-Provider Setup**: [`docs/setup/MULTI_PROVIDER_SETUP.md`](docs/setup/MULTI_PROVIDER_SETUP.md)
 
 ## 📊 Current Production Data
 

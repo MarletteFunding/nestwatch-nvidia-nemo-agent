@@ -9,10 +9,38 @@ openai>=1.0.0
 anthropic>=0.18.0
 jsonschema>=4.25.0
 
-# Optional ML dependencies (install if needed)
-# torch>=2.0.0
-# transformers>=4.21.0
-# nemo_toolkit>=2.4.0
+# AWS Bedrock integration (Corporate friendly)
+boto3>=1.34.0
+botocore>=1.34.0
 
-# Development dependencies
+# HTTP and SSL handling for corporate environments
+requests>=2.31.0
+urllib3>=2.0.0
+certifi>=2023.7.22
+
+# NVIDIA NeMo Framework Dependencies (Corporate optimized)
+# Note: For Zscaler environments, install PyTorch separately:
+# pip install torch>=2.0.0 --index-url https://download.pytorch.org/whl/cpu
+torch>=2.0.0
+transformers>=4.21.0
+# nemo_toolkit[nlp]>=1.22.0  # Commented out - install manually if needed
+# nvidia-ml-py3>=11.0.0      # Commented out - GPU optional in corporate
+
+# Hugging Face integration (Corporate friendly)
+huggingface_hub>=0.17.0
+tokenizers>=0.14.0
+
+# Additional ML dependencies (Corporate safe)
+omegaconf>=2.3.0
+hydra-core>=1.3.0
+# pytorch-lightning>=2.0.0  # Commented out - heavy dependency
+# torchmetrics>=0.11.0      # Commented out - optional
+
+# Development and utility dependencies
 python-dotenv>=1.0.0
+pyyaml>=6.0.0
+typing-extensions>=4.8.0
+
+# Corporate environment utilities
+psutil>=5.9.0  # System monitoring
+packaging>=23.0  # Version handling
