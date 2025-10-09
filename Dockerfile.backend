@@ -1,0 +1,77 @@
+# Multi-stage build for Python FastAPI backend
+FROM python:3.11-slim AS base
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+# Set work directory
+WORKDIR /app
+
+# Install Python dependencies
+FROM base AS deps
+COPY backend/requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+FROM deps AS builder
+COPY backend/ ./backend/
+COPY plugins/ ./plugins/
+COPY middleware/ ./middleware/
+COPY config/ ./config/
+COPY models/ ./models/
+COPY prompts/ ./prompts/
+COPY schemas/ ./schemas/
+COPY scripts/ ./scripts/
+COPY tests/ ./tests/
+
+# Create production image
+FROM base AS runner
+WORKDIR /app
+
+# Copy installed packages from deps stage
+COPY --from=deps /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=deps /usr/local/bin /usr/local/bin
+
+# Copy application code
+COPY --from=builder /app/backend ./backend
+COPY --from=builder /app/plugins ./plugins
+COPY --from=builder /app/middleware ./middleware
+COPY --from=builder /app/config ./config
+COPY --from=builder /app/models ./models
+COPY --from=builder /app/prompts ./prompts
+COPY --from=builder /app/schemas ./schemas
+COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/tests ./tests
+
+# Copy environment files if they exist
+COPY *.env* ./
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/data && \
+    chown -R appuser:appuser /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose port
+EXPOSE 8000
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8000/api/v1/health || exit 1
+
+# Run the application
+WORKDIR /app/backend
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
