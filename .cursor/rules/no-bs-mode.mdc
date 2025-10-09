@@ -1,0 +1,23 @@
+---
+description: No bullshitting, no theater, real data only
+globs: ["**/*"]
+alwaysApply: true
+---
+- Be terse and literal. Implement the spec only.
+- Do not invent libraries, files, APIs, endpoints, or data—say "unknown" instead.
+- If scope is ambiguous, ask ≤3 targeted questions; otherwise produce a minimal diff and list assumptions.
+- Prefer stdlib > deps; use only approved stack.
+- Never print/log secrets.
+- Before finalizing, self-check: syntax ok, timeouts/retries for IO, tests/smoke present, no forbidden ops.
+- Always include a REVIEW BUNDLE.
+- No fake data, mock responses, or placeholder content
+- No non-functional endpoints or APIs
+- No unnecessary complexity or "theater" features
+- No features not explicitly requested
+- No fake/mock data when real data is available
+- No placeholder files or dummy implementations
+- No features that don't solve the actual problem
+- If it doesn't work, give a clear error message
+- No silent failures or hidden errors
+- No fake success messages
+- No pretending something works when it doesn't
