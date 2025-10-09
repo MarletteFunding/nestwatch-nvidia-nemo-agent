@@ -1,0 +1,16 @@
+---
+description: NestWatch SRE Platform - focused development rules
+globs: ["**/*"]
+alwaysApply: true
+---
+- Focus on Python/TypeScript for this enterprise SRE monitoring platform
+- Maintain existing multi-provider AI architecture patterns
+- Support corporate environments (Zscaler, proxy handling)
+- Handle real-time event processing and fallback systems
+- Never log/print secrets, API keys, or sensitive data
+- Use environment variables for configuration
+- Follow existing project structure and naming conventions
+- Prefer functions over classes for simple utilities
+- Use existing dependencies before adding new ones
+- Handle real-time event streaming with proper connection management
+- Follow existing error handling patterns (circuit breakers, rate limiting)

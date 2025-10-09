@@ -1,0 +1,19 @@
+---
+description: Catch dangerous patterns in SRE platform
+globs: ["**/*"]
+alwaysApply: true
+---
+- Broad/bare except blocks without proper error handling
+- Network calls without timeouts/retries (use existing rate limiting)
+- Global mutable state; mutable default arguments
+- Logging secrets/tokens/API keys; dumping full request/response bodies
+- Silent fallbacks that mask real outages (log fallback usage)
+- Ignoring circuit breaker/rate limit signals
+- Adding new external endpoints without proper error handling
+- Hardcoded URLs (use environment variables)
+- Bypassing corporate proxy settings in production
+- Unbounded loops or memory buffers
+- Missing error handling in AI provider calls
+- Not handling provider failures gracefully
+- WebSocket connections without reconnection logic
+- Event stream failures without fallback to cached data
