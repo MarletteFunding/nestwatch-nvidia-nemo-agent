@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'standalone',
   // Temporarily disable rewrites to fix Next.js error
   // async rewrites() {
   //   return [

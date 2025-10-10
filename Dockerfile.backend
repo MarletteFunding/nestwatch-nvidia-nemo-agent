@@ -34,7 +34,7 @@ COPY models/ ./models/
 COPY prompts/ ./prompts/
 COPY schemas/ ./schemas/
 COPY scripts/ ./scripts/
-COPY tests/ ./tests/
+
 
 # Create production image
 FROM base AS runner
@@ -53,7 +53,7 @@ COPY --from=builder /app/models ./models
 COPY --from=builder /app/prompts ./prompts
 COPY --from=builder /app/schemas ./schemas
 COPY --from=builder /app/scripts ./scripts
-COPY --from=builder /app/tests ./tests
+# COPY --from=builder /app/tests ./tests  # Commented out - tests not needed in production
 
 # Copy environment files if they exist
 COPY *.env* ./
