@@ -130,7 +130,7 @@ class ProviderAvailability:
     
     def _check_nemo_local(self) -> bool:
         try:
-            # Try NeMo first, fall back to transformers
+            # Try NeMo first, fall back to transformers, then simple local
             try:
                 import nemo.collections.nlp as nemo_nlp
                 import torch
@@ -138,10 +138,15 @@ class ProviderAvailability:
                 return True
             except ImportError:
                 # Fall back to transformers
-                import torch
-                from transformers import AutoTokenizer, AutoModelForCausalLM
-                logger.info("✅ Transformers-based NeMo fallback available")
-                return True
+                try:
+                    import torch
+                    from transformers import AutoTokenizer, AutoModelForCausalLM
+                    logger.info("✅ Transformers-based NeMo fallback available")
+                    return True
+                except ImportError:
+                    # Final fallback to simple local LLM
+                    logger.info("✅ Simple Local LLM fallback available")
+                    return True
         except ImportError:
             logger.warning("Local NeMo not available: PyTorch and transformers not installed")
             return False
@@ -244,6 +249,57 @@ class BedrockProvider:
         output_cost_per_1k = 0.015  # $15 per 1M output tokens
         return (tokens / 1000) * output_cost_per_1k
 
+class SimpleLocalProvider:
+    """Simple local LLM provider that works without model downloads"""
+    
+    def __init__(self):
+        self.model_path = "simple-local-llm"
+        self.initialized = False
+        
+    def initialize(self) -> bool:
+        """Initialize the simple local provider"""
+        try:
+            from .simple_local_llm import simple_local_llm
+            success = simple_local_llm.initialize()
+            if success:
+                self.initialized = True
+                logger.info("✅ Simple Local LLM provider initialized")
+            return success
+        except Exception as e:
+            logger.error(f"❌ Failed to initialize Simple Local LLM: {e}")
+            return False
+    
+    async def generate(self, prompt: str, max_tokens: int = 600, temperature: float = 0.0) -> ProviderResponse:
+        """Generate response using simple local LLM"""
+        if not self.initialized:
+            raise Exception("Simple local provider not initialized")
+        
+        try:
+            from .simple_local_llm import simple_local_llm
+            response = await simple_local_llm.generate(prompt, max_tokens, temperature)
+            
+            return ProviderResponse(
+                content=response.content,
+                provider=ProviderType.NEMO_LOCAL,
+                model=self.model_path,
+                tokens_used=response.tokens_used,
+                response_time=response.response_time,
+                cost_estimate=0.0,
+                success=response.success,
+                error=response.error
+            )
+        except Exception as e:
+            return ProviderResponse(
+                content="",
+                provider=ProviderType.NEMO_LOCAL,
+                model=self.model_path,
+                tokens_used=0,
+                response_time=0.0,
+                cost_estimate=0.0,
+                success=False,
+                error=str(e)
+            )
+
 class NeMoLocalProvider:
     """Local NVIDIA NeMo model provider"""
     
@@ -256,7 +312,7 @@ class NeMoLocalProvider:
         
     def initialize(self) -> bool:
         try:
-            # Try actual NeMo first, fall back to transformers
+            # Try actual NeMo first, fall back to transformers, then simple local
             try:
                 import nemo.collections.nlp as nemo_nlp
                 import torch
@@ -274,12 +330,38 @@ class NeMoLocalProvider:
                 return True
                 
             except ImportError:
-                # Fall back to transformers-based local model
-                logger.info("🔄 NeMo not available, using transformers-based local model")
-                return self._initialize_transformers_fallback()
+                # Check if we should use simple local instead of transformers
+                if os.getenv('NEMO_MODEL_PATH', '').startswith('simple-'):
+                    logger.info("🔄 Using Simple Local LLM instead of transformers")
+                    return self._initialize_simple_local_fallback()
+                else:
+                    # Fall back to transformers-based local model
+                    logger.info("🔄 NeMo not available, using transformers-based local model")
+                    return self._initialize_transformers_fallback()
             
         except Exception as e:
             logger.error(f"❌ Failed to initialize local NeMo: {e}")
+            # Final fallback to simple local provider
+            logger.info("🔄 Falling back to Simple Local LLM")
+            return self._initialize_simple_local_fallback()
+    
+    def _initialize_simple_local_fallback(self) -> bool:
+        """Initialize simple local LLM as final fallback"""
+        try:
+            # Try absolute import first, then relative
+            try:
+                from simple_local_llm import simple_local_llm
+            except ImportError:
+                from .simple_local_llm import simple_local_llm
+            
+            success = simple_local_llm.initialize()
+            if success:
+                self.initialized = True
+                self.model_path = "simple-local-llm"
+                logger.info("✅ Simple Local LLM fallback initialized")
+            return success
+        except Exception as e:
+            logger.error(f"❌ Simple Local LLM fallback failed: {e}")
             return False
     
     def _initialize_transformers_fallback(self) -> bool:
@@ -311,7 +393,9 @@ class NeMoLocalProvider:
             
         except Exception as e:
             logger.error(f"❌ Failed to initialize transformers fallback: {e}")
-            return False
+            # Fall back to simple local
+            logger.info("🔄 Falling back to Simple Local LLM")
+            return self._initialize_simple_local_fallback()
     
     async def generate(self, prompt: str, max_tokens: int = 600, temperature: float = 0.0) -> ProviderResponse:
         if not self.initialized:
@@ -320,8 +404,27 @@ class NeMoLocalProvider:
         start_time = time.time()
         
         try:
+            # Check if we're using simple local fallback
+            if self.model_path == "simple-local-llm":
+                try:
+                    from simple_local_llm import simple_local_llm
+                except ImportError:
+                    from .simple_local_llm import simple_local_llm
+                
+                response = await simple_local_llm.generate(prompt, max_tokens, temperature)
+                return ProviderResponse(
+                    content=response.content,
+                    provider=ProviderType.NEMO_LOCAL,
+                    model=self.model_path,
+                    tokens_used=response.tokens_used,
+                    response_time=response.response_time,
+                    cost_estimate=0.0,
+                    success=response.success,
+                    error=response.error
+                )
+            
             # Check if we have a real NeMo model or transformers fallback
-            if hasattr(self, 'tokenizer') and self.tokenizer is not None:
+            elif hasattr(self, 'tokenizer') and self.tokenizer is not None:
                 # Using transformers fallback
                 content = await self._generate_with_transformers(prompt, max_tokens, temperature)
             else:

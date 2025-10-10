@@ -98,9 +98,8 @@ NeMo-Agent-Toolkit-develop/
 │   └── .gitignore                 # Git ignore rules
 │
 └── 📊 Data & Runtime
-    ├── sre_events.db              # SQLite database
-    ├── venv/                      # Python virtual environment
-    └── node_modules/              # Node.js modules
+   ├── venv/                      # Python virtual environment
+   └── node_modules/              # Node.js modules
 ```
 
 ## 🎯 Key Components Status

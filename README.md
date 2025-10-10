@@ -31,9 +31,10 @@ This ensures that SRE teams can trust the system completely and make informed de
 ## 🚀 Enhanced Multi-Provider Features
 
 ### 🤖 **AI Capabilities**
-- **2-3 AI Providers**: Anthropic Claude, OpenAI GPT, AWS Bedrock (when configured)
+- **4 AI Providers**: Local NeMo, Anthropic Claude, OpenAI GPT, AWS Bedrock
+- **Local NeMo**: Corporate-safe, no internet required, instant responses
 - **Provider Fallbacks**: System continues working when providers fail
-- **Local NeMo**: Available when properly installed
+- **Intelligent Routing**: Smart provider selection based on request type
 - **High Performance**: Optimized for real-time SRE monitoring and analysis
 - **Cost Optimization**: Built-in usage tracking and cost estimation
 - **Provider Health Monitoring**: Real-time status tracking for AI providers
@@ -149,15 +150,17 @@ echo "ANTHROPIC_API_KEY=your_api_key_here" > .env.local
 
 #### Multi-Provider AI Setup (Advanced)
 ```bash
+# Local NeMo (Corporate-Safe, No Internet Required)
+export ENABLE_LOCAL_NEMO=true
+export NEMO_MODEL_PATH=simple-local-llm
+export PROVIDER_PRIORITY=nemo_local,anthropic,openai
+
 # AWS Bedrock (Recommended for Enterprise)
 export AWS_REGION=us-east-1
 export AWS_ACCESS_KEY_ID=your_aws_key
 export AWS_SECRET_ACCESS_KEY=your_aws_secret
 export ENABLE_BEDROCK=true
 export BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20241022-v2:0
-
-# Set provider priority
-export PROVIDER_PRIORITY=bedrock,anthropic,openai
 ```
 
 #### BestEgg SRE API Integration (Corporate)
@@ -321,6 +324,34 @@ NestWatch includes comprehensive quota management to optimize AI usage:
 - ⚡ **Rate Limiting** - Token bucket rate limiting (0.5 RPS)
 - 🎯 **Smart Policies** - Skip AI for low-priority events
 - 🔄 **Fallback Summaries** - Deterministic analysis without AI
+
+## 🏠 Local NeMo Integration
+
+### Real AI Model Processing (Now Available!)
+- **Real Models**: Downloads and uses actual Hugging Face models
+- **No Internet Required**: Works offline after initial download
+- **Zero Cost**: No API charges for local processing
+- **Corporate-Safe**: Bypasses proxy restrictions after Zscaler removal
+- **SRE-Focused**: Specialized responses for incident analysis
+
+### Local NeMo Features
+- **Real AI Models**: Uses transformers-based models (DialoGPT, GPT-2, etc.)
+- **Contextual Analysis**: AI-powered SRE incident analysis
+- **Priority-Aware**: Different responses for P1, P2, P3 incidents
+- **Source-Specific**: Tailored analysis for database, network, application issues
+- **Professional Format**: AI-generated incident analysis reports
+
+### Model Options
+```bash
+# Use DialoGPT (conversational model)
+export NEMO_MODEL_PATH=microsoft/DialoGPT-medium
+
+# Use GPT-2 (better for text generation)
+export NEMO_MODEL_PATH=gpt2
+
+# Use rule-based fallback (corporate-safe)
+export NEMO_MODEL_PATH=simple-local-llm
+```
 
 ### Usage Monitoring
 ```bash

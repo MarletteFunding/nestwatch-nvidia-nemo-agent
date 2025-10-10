@@ -1767,7 +1767,7 @@ async def generate_dashboard_insights(request: dict):
                 insights.append({
                     "type": "alert",
                     "title": "Critical Events Active",
-                    "message": f"{critical_count} P1 incidents require immediate attention. Check database and API services.",
+                    "message": f"{critical_count} P1 incidents require immediate attention. Check critical services.",
                     "severity": "critical",
                     "icon": "🚨"
                 })
