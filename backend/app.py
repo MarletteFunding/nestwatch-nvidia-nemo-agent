@@ -929,25 +929,11 @@ async def get_sre_event(event_id: str):
             # Event not found
             raise HTTPException(status_code=404, detail=f"Event {event_id} not found")
         else:
-            # Fallback to mock data
-            mock_event = {
-                "id": event_id,
-                "identifier": event_id,
-                "slack_id": "C1234567890",
-                "summary": f"Event {event_id} details",
-                "status": "active",
-                "priority": "P2",
-                "source": "datadog",
-                "timestamp": "2024-01-15T12:00:00Z",
-                "created_at": "2024-01-15T12:00:00Z",
-                "updated_at": "2024-01-15T12:00:00Z",
-                "details": {
-                    "severity": "medium",
-                    "affected_services": ["api", "database"],
-                    "assigned_to": "sre-team"
-                }
-            }
-            return mock_event
+            # SRE tools not available - return service unavailable
+            raise HTTPException(
+                status_code=503, 
+                detail="SRE API service unavailable - enhanced tools not configured"
+            )
             
     except HTTPException:
         raise

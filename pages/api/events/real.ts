@@ -49,7 +49,8 @@ class SREAPISource implements EventSource {
 
   async fetchEvents(): Promise<EventData[]> {
     try {
-      const response = await fetch('http://localhost:8000/event_interactions/events', {
+      console.log('SREAPISource: Fetching events from backend...')
+      const response = await fetch('http://127.0.0.1:8000/event_interactions/events', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -57,25 +58,30 @@ class SREAPISource implements EventSource {
         }
       })
 
+      console.log('SREAPISource: Response status:', response.status)
       if (!response.ok) {
         console.warn(`SRE API failed: ${response.status}`)
         return []
       }
 
       const data = await response.json()
+      console.log('SREAPISource: Received data with', data.result?.length || 0, 'events')
       const events = data.result || []
       
-      return events.map((event: any, index: number) => ({
-        event_id: event.event_id || `sre_${index}`,
-        slack_channel_id: event.slack_channel_id || '',
+      const mappedEvents = events.map((event: any, index: number) => ({
+        event_id: event.event_id || event.id || `sre_${index}`,
+        slack_channel_id: event.slack_id || '',
         subject: event.subject || event.summary || 'SRE Event',
-        event_source: event.event_source || 'sre_api',
+        event_source: event.event_source || event.source || 'sre_api',
         current_status: event.current_status || event.status || 'Open',
         create_ts: event.create_ts || event.timestamp || new Date().toISOString(),
         priority: event.priority || 'P3',
-        monitor_name: event.event_source || 'SRE API',
+        monitor_name: event.event_source || event.source || 'SRE API',
         original_title: event.subject || event.summary || 'SRE Event'
       }))
+      
+      console.log('SREAPISource: Mapped', mappedEvents.length, 'events')
+      return mappedEvents
     } catch (error) {
       console.error('SRE API error:', error)
       return []

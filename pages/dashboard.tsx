@@ -105,43 +105,10 @@ const Dashboard: React.FC = () => {
         setError(null);
       } catch (err) {
         console.error('Error fetching events:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch events');
-        // Fallback to static data if API fails
-        setEvents([
-          {
-            event_id: 'fallback_1',
-            subject: '[P1] Critical: Database connection timeout affecting 1000+ users',
-            current_status: 'Open',
-            priority: 'P1',
-            event_source: 'datadog',
-            source: 'datadog',
-            monitor_name: 'Database Health Check',
-            create_ts: new Date().toISOString(),
-            original_title: 'Database connection timeout'
-          },
-          {
-            event_id: 'fallback_2',
-            subject: '[P2] High: API response time degradation detected',
-            current_status: 'In Progress',
-            priority: 'P2',
-            event_source: 'datadog',
-            source: 'datadog',
-            monitor_name: 'API Performance Monitor',
-            create_ts: new Date(Date.now() - 3600000).toISOString(),
-            original_title: 'API response time degradation'
-          },
-          {
-            event_id: 'fallback_3',
-            subject: '[P3] Medium: Disk space warning on production server',
-            current_status: 'Open',
-            priority: 'P3',
-            event_source: 'datadog',
-            source: 'datadog',
-            monitor_name: 'Disk Space Monitor',
-            create_ts: new Date(Date.now() - 7200000).toISOString(),
-            original_title: 'Disk space warning'
-          }
-        ]);
+        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch events from SRE API';
+        setError(errorMessage);
+        // No fake data - show empty state with real error
+        setEvents([]);
       } finally {
         setLoading(false);
       }

@@ -53,7 +53,7 @@ COPY --from=builder /app/models ./models
 COPY --from=builder /app/prompts ./prompts
 COPY --from=builder /app/schemas ./schemas
 COPY --from=builder /app/scripts ./scripts
-# COPY --from=builder /app/tests ./tests  # Commented out - tests not needed in production
+COPY --from=builder /app/tests ./tests
 
 # Copy environment files if they exist
 COPY *.env* ./
