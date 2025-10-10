@@ -13,7 +13,20 @@ A production-ready **enterprise-grade multi-provider AI** SRE (Site Reliability 
 
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
 [![GitHub](https://img.shields.io/badge/GitHub-NestWatch-blue)](https://github.com/skerns321/nestwatch-nvidia-nemo-agent)
-[![Events](https://img.shields.io/badge/Live%20Events-104+-orange)]()
+[![Events](https://img.shields.io/badge/Live%20Events-279+-orange)]()
+
+## 🎯 **"No Bullshitting" Philosophy**
+
+NestWatch follows a strict **"no bullshitting"** approach to ensure complete transparency and reliability:
+
+- **✅ Real Data Only**: No fake data, mock responses, or placeholder content
+- **✅ Honest Error Reporting**: Clear, specific error messages with actionable guidance
+- **✅ No Silent Failures**: All errors are properly logged and displayed
+- **✅ No Fake Success**: System only reports success when it actually works
+- **✅ Transparent Status**: Real-time system status with honest diagnostics
+- **✅ Professional Error States**: Comprehensive error handling with retry mechanisms
+
+This ensures that SRE teams can trust the system completely and make informed decisions based on real, accurate data.
 
 ## 🚀 Enhanced Multi-Provider Features
 
@@ -28,12 +41,14 @@ A production-ready **enterprise-grade multi-provider AI** SRE (Site Reliability 
 - **Usage Analytics**: Comprehensive cost and performance monitoring across providers
 
 ### 📊 **Core SRE Capabilities** 
-- **Real-time Events**: Monitor 104+ active production events with priority filtering
+- **Real-time Events**: Monitor 279+ active production events with priority filtering
 - **AI-Powered Analysis**: Multi-provider intelligent SRE assistance with automatic failover
+- **Real Data Only**: No fake data, mock responses, or placeholder content - honest error reporting
 - **NestWatch Design**: Beautiful modern UI with light/dark themes and custom iconography
 - **FastAPI Backend**: High-performance Python backend with comprehensive APIs
 - **Next.js Frontend**: Modern React frontend with real-time updates and responsive design
 - **Multi-Source Integration**: SRE API, JIRA, and Datadog integrations
+- **Error State UI**: Professional error handling with specific, actionable error messages
 
 ### 🏢 **Enterprise & Corporate Features**
 - **Zscaler Compatibility**: Automatic proxy detection and SSL certificate handling
@@ -66,6 +81,9 @@ Your project is now beautifully organized with comprehensive documentation:
 - **Production Guide**: [`docs/deployment/PRODUCTION_READY_GUIDE.md`](docs/deployment/PRODUCTION_READY_GUIDE.md)
 - **Corporate Setup**: [`docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md`](docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md)
 - **Multi-Provider Setup**: [`docs/setup/MULTI_PROVIDER_SETUP.md`](docs/setup/MULTI_PROVIDER_SETUP.md)
+- **Error Handling**: [`docs/ERROR_HANDLING.md`](docs/ERROR_HANDLING.md) - Professional error handling guide
+- **No Bullshitting Rules**: [`docs/NO_BULLSHITTING_RULES.md`](docs/NO_BULLSHITTING_RULES.md) - Philosophy and implementation
+- **Cursor AI Rules**: [`docs/CURSOR_AI_RULES.md`](docs/CURSOR_AI_RULES.md) - AI development guidelines
 
 ## 📊 Current Production Data
 

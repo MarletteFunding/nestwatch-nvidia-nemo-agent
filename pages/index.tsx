@@ -46,18 +46,20 @@ export default function Home() {
         const assistantMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: data.response || 'Sorry, I could not process your request.',
+          content: data.response || '⚠️ **Empty Response**: The AI service returned no content. This may indicate:\n\n• AI provider quota exceeded\n• Model timeout or rate limiting\n• Invalid request format\n\n**Try**: Rephrasing your question or checking AI provider status.',
           timestamp: Date.now()
         };
         setMessages(prev => [...prev, assistantMessage]);
       } else {
-        throw new Error('Failed to get response');
+        const errorText = await response.text();
+        throw new Error(`Backend API error (${response.status}): ${errorText}`);
       }
     } catch (error) {
+      console.error('Chat error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: 'Sorry, there was an error processing your request. Please make sure the NeMo backend is running.',
+        content: `❌ **Connection Error**: ${error instanceof Error ? error.message : 'Unknown error occurred'}\n\n**Troubleshooting**:\n• Check if backend is running: \`python app.py\`\n• Verify port 8000 is available\n• Check console for detailed error logs`,
         timestamp: Date.now()
       };
       setMessages(prev => [...prev, errorMessage]);

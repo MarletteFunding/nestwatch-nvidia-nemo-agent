@@ -12,7 +12,11 @@ NeMo-Agent-Toolkit-develop/
 │   ├── components/
 │   │   ├── SRE/AIAssistant.tsx    # AI chat interface
 │   │   ├── ThemeContext.tsx       # Theme management
-│   │   └── ErrorBoundary.tsx      # Error handling
+│   │   ├── ErrorBoundary.tsx      # Error handling
+│   │   └── ErrorStates/           # Professional error state components
+│   │       ├── APIErrorState.tsx  # API error handling
+│   │       ├── EmptyState.tsx     # Empty state handling
+│   │       └── LoadingState.tsx   # Loading state handling
 │   └── ui/                        # NestWatch UI components
 │
 ├── 🔧 Backend (FastAPI + Multi-Provider AI)
@@ -55,6 +59,8 @@ NeMo-Agent-Toolkit-develop/
 │   │   ├── setup/
 │   │   │   ├── setup_anthropic.py # Anthropic setup
 │   │   │   ├── setup_api_credentials.py # API setup
+│   │   ├── test-error-scenarios.sh # Error testing automation
+│   │   └── test-comprehensive-errors.sh # Comprehensive error testing
 │   │   │   └── setup_zscaler_environment.py # Corporate setup
 │   │   ├── corporate/
 │   │   │   ├── download_models_corporate.py # Model downloader

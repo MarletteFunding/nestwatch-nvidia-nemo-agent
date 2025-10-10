@@ -94,19 +94,20 @@ const AIAssistant: React.FC<AIAssistantProps> = ({
         const assistantMessage: Message = {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: data.response || 'I apologize, but I couldn\'t process your request at the moment.',
+          content: data.response || '⚠️ **SRE AI Empty Response**: No analysis returned. Possible causes:\n\n• AI provider rate limit exceeded\n• SRE context too large for processing\n• Model timeout on complex query\n• Invalid event data format\n\n**Try**: Simplifying your question or checking AI provider logs.',
           timestamp: Date.now()
         };
         setMessages(prev => [...prev, assistantMessage]);
       } else {
-        throw new Error('Failed to get AI response');
+        const errorText = await response.text();
+        throw new Error(`SRE AI API error (${response.status}): ${errorText}`);
       }
     } catch (error) {
-      console.error('AI Assistant error:', error);
+      console.error('SRE AI Assistant error:', error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content: '❌ I\'m having trouble connecting right now. Please try again in a moment, or check if the AI service is running.',
+        content: `❌ **SRE AI Service Error**: ${error instanceof Error ? error.message : 'Unknown error occurred'}\n\n**Diagnostic Info**:\n• AI Provider: ${aiAvailable ? 'Available' : 'Unavailable'}\n• Events Loaded: ${events.length}\n• Backend Status: Check if SRE API is running\n\n**Next Steps**:\n• Verify AI provider configuration\n• Check backend logs for detailed errors\n• Try refreshing the dashboard`,
         timestamp: Date.now()
       };
       setMessages(prev => [...prev, errorMessage]);

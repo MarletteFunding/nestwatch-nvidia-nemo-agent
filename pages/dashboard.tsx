@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { ThemeProvider, useTheme } from '../components/ThemeContext';
 import AIAssistant from '../components/SRE/AIAssistant';
 import { CriticalDiamond, WarningTriangle, InfoCircle, SuccessCheck } from '../ui/icons/nestwatch';
+import { APIErrorState, EmptyState, LoadingState } from '../components/ErrorStates';
 
 interface SREEvent {
   id?: string;
@@ -370,10 +371,60 @@ This event requires manual investigation. Please check the source system for add
         data-nestwatch-theme="true"
         data-theme={currentTheme}
       >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[var(--nw-navy)] mx-auto mb-4"></div>
-          <p className="nw-body text-lg">Loading events...</p>
-        </div>
+        <LoadingState 
+          message="Loading SRE Events"
+          service="SRE API"
+          showProgress={true}
+          progress={75}
+        />
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className={`min-h-screen ${currentTheme === 'dark' 
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+        : 'bg-[#f8fafc]'} flex items-center justify-center`}
+        data-nestwatch-theme="true"
+        data-theme={currentTheme}
+      >
+        <APIErrorState 
+          error={error}
+          service="SRE API"
+          onRetry={() => {
+            setError(null);
+            setLoading(true);
+            fetchEvents();
+          }}
+          showDiagnostics={true}
+        />
+      </div>
+    );
+  }
+
+  // Show empty state if no events
+  if (events.length === 0) {
+    return (
+      <div className={`min-h-screen ${currentTheme === 'dark' 
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+        : 'bg-[#f8fafc]'} flex items-center justify-center`}
+        data-nestwatch-theme="true"
+        data-theme={currentTheme}
+      >
+        <EmptyState 
+          title="No SRE Events Available"
+          message="No events are currently available from the SRE API. This could indicate a system issue or no active incidents."
+          icon="📊"
+          showRefresh={true}
+          onRefresh={() => {
+            setLoading(true);
+            fetchEvents();
+          }}
+          showDiagnostics={true}
+          eventCount={events.length}
+        />
       </div>
     );
   }
