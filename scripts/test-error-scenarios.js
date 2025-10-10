@@ -144,7 +144,7 @@ async function testErrorScenarios() {
     }
   });
   
-  console.log('\n🎯 "No Bullshitting" Rules Check:');
+  console.log('\n🎯 "No bs" Rules Check:');
   const hasFakeData = results.some(r => r.hasFakeData);
   if (hasFakeData) {
     console.log('❌ FAILED: Fake data detected in responses');

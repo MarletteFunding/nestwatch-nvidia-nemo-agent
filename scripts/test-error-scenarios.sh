@@ -156,7 +156,7 @@ echo "Successful: $success_count"
 echo "Failed: $((total_tests - success_count))"
 
 echo ""
-echo "🎯 'No Bullshitting' Rules Check:"
+echo "🎯 'No bs' Rules Check:"
 
 # Check for fake data in all responses
 has_fake_data=false

@@ -1729,7 +1729,7 @@ async def generate_dashboard_insights(request: dict):
                 Focus on actionable insights, trends, and recommendations.
                 """
                 
-                ai_response = nemo_enhanced_sre.intelligent_sre_analysis(
+                ai_response = await nemo_enhanced_sre.intelligent_sre_analysis(
                     "Generate dashboard insights",
                     analysis_prompt
                 )

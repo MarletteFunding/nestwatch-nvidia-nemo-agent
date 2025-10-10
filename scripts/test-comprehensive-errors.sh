@@ -179,7 +179,7 @@ echo "Passed: $passed_tests"
 echo "Failed: $((total_tests - passed_tests))"
 
 echo ""
-echo "🎯 'No Bullshitting' Rules Verification:"
+echo "🎯 'No bs' Rules Verification:"
 echo "========================================="
 
 # Check for fake data
@@ -216,7 +216,7 @@ echo "🔍 Final Assessment:"
 echo "===================="
 
 if [ "$passed_tests" -eq "$total_tests" ] && [ "$has_fake_data" = false ]; then
-    echo "🎉 ALL TESTS PASSED - No bullshitting detected!"
+    echo "🎉 ALL TESTS PASSED - No bs detected!"
     echo "✅ Real data only"
     echo "✅ Proper error handling"
     echo "✅ No fake fallbacks"
@@ -227,7 +227,7 @@ else
         echo "• $((total_tests - passed_tests)) tests failed"
     fi
     if [ "$has_fake_data" = true ]; then
-        echo "• Fake data detected - violates 'no bullshitting' rules"
+        echo "• Fake data detected - violates 'no bs' rules"
     fi
 fi
 

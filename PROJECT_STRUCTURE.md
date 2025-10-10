@@ -61,18 +61,13 @@ NeMo-Agent-Toolkit-develop/
 │   │   │   ├── setup_api_credentials.py # API setup
 │   │   ├── test-error-scenarios.sh # Error testing automation
 │   │   └── test-comprehensive-errors.sh # Comprehensive error testing
-│   │   │   └── setup_zscaler_environment.py # Corporate setup
-│   │   ├── corporate/
-│   │   │   ├── download_models_corporate.py # Model downloader
-│   │   │   └── install_corporate.sh # Corporate installer
 │   │   └── demo/
 │   │       └── production_demo.py # System demonstration
 │   └── verify-contrast.js         # Accessibility testing
 │
 ├── 🤖 AI Models & Configuration
 │   ├── models/
-│   │   ├── offline_config.json    # Offline model config
-│   │   └── corporate_config.json  # Corporate model settings
+│   │   └── offline_config.json    # Offline model config
 │   ├── prompts/
 │   │   ├── system/sre_core_v3.md  # System prompts
 │   │   └── cards/event_analysis_v1.md # Analysis prompts

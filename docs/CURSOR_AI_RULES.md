@@ -2,7 +2,7 @@
 
 ## Overview
 
-NestWatch uses Cursor AI with specific rules to ensure consistent, high-quality development that follows the "no bullshitting" philosophy.
+NestWatch uses Cursor AI with specific rules to ensure consistent, high-quality development that follows the "no bs" philosophy.
 
 ## 📁 Rule Files
 
@@ -54,11 +54,11 @@ alwaysApply: true
 ```
 
 ### `.cursor/rules/no-bs-mode.mdc`
-**Purpose**: Enforce "no bullshitting" philosophy
+**Purpose**: Enforce "no bs" philosophy
 
 ```markdown
 ---
-description: No bullshitting, no theater, real data only
+description: No bs, no theater, real data only
 globs: ["**/*"]
 alwaysApply: true
 ---
@@ -165,7 +165,7 @@ content: 'Sorry, there was an error processing your request.'
 ### Code Review Checklist
 - [ ] **Follows core.mdc rules** for SRE platform development
 - [ ] **Avoids anti-patterns.mdc** dangerous patterns
-- [ ] **Implements no-bs-mode.mdc** "no bullshitting" philosophy
+- [ ] **Implements no-bs-mode.mdc** "no bs" philosophy
 - [ ] **No fake data** in any response
 - [ ] **Specific error messages** with diagnostic information
 - [ ] **Proper error states** for all failure scenarios

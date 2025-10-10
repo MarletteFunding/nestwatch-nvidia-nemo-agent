@@ -8,16 +8,16 @@ A production-ready **enterprise-grade multi-provider AI** SRE (Site Reliability 
 
 - **🌐 Dashboard**: http://localhost:3000/dashboard ✅ **ACTIVE**
 - **🔧 Backend API**: http://localhost:8000/ ✅ **ACTIVE** 
-- **🤖 AI Providers**: 4 providers available ✅ **OPERATIONAL**
-- **🏢 Corporate Ready**: Zscaler-compatible ✅ **CONFIGURED**
+- **🤖 AI Providers**: 2-3 providers available ✅ **OPERATIONAL**
+- **🚀 Production Ready**: High-performance monitoring ✅ **OPERATIONAL**
 
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-green)]()
 [![GitHub](https://img.shields.io/badge/GitHub-NestWatch-blue)](https://github.com/skerns321/nestwatch-nvidia-nemo-agent)
 [![Events](https://img.shields.io/badge/Live%20Events-279+-orange)]()
 
-## 🎯 **"No Bullshitting" Philosophy**
+## 🎯 **"No bs" Philosophy**
 
-NestWatch follows a strict **"no bullshitting"** approach to ensure complete transparency and reliability:
+NestWatch follows a strict **"no bs"** approach to ensure complete transparency and reliability:
 
 - **✅ Real Data Only**: No fake data, mock responses, or placeholder content
 - **✅ Honest Error Reporting**: Clear, specific error messages with actionable guidance
@@ -30,15 +30,14 @@ This ensures that SRE teams can trust the system completely and make informed de
 
 ## 🚀 Enhanced Multi-Provider Features
 
-### 🤖 **Enterprise AI Capabilities**
-- **4 AI Providers**: AWS Bedrock, Local NeMo, Anthropic Claude, OpenAI GPT
-- **Intelligent Routing**: Smart provider selection based on request type and data sensitivity
-- **Graceful Fallbacks**: System continues working even when providers fail
-- **Corporate Compatible**: Works in Zscaler/proxy environments with SSL handling
-- **Cost Optimization**: Built-in usage tracking, quota management, and cost estimation
-- **Security Routing**: Route sensitive requests to local processing automatically
-- **Provider Health Monitoring**: Real-time status tracking for all AI providers
-- **Usage Analytics**: Comprehensive cost and performance monitoring across providers
+### 🤖 **AI Capabilities**
+- **2-3 AI Providers**: Anthropic Claude, OpenAI GPT, AWS Bedrock (when configured)
+- **Provider Fallbacks**: System continues working when providers fail
+- **Local NeMo**: Available when properly installed
+- **High Performance**: Optimized for real-time SRE monitoring and analysis
+- **Cost Optimization**: Built-in usage tracking and cost estimation
+- **Provider Health Monitoring**: Real-time status tracking for AI providers
+- **Usage Analytics**: Cost and performance monitoring across providers
 
 ### 📊 **Core SRE Capabilities** 
 - **Real-time Events**: Monitor 279+ active production events with priority filtering
@@ -50,12 +49,12 @@ This ensures that SRE teams can trust the system completely and make informed de
 - **Multi-Source Integration**: SRE API, JIRA, and Datadog integrations
 - **Error State UI**: Professional error handling with specific, actionable error messages
 
-### 🏢 **Enterprise & Corporate Features**
-- **Zscaler Compatibility**: Automatic proxy detection and SSL certificate handling
-- **Corporate Installation**: Automated scripts for enterprise environments
-- **Offline Capabilities**: Local model processing for sensitive corporate data
+### 🚀 **Production & Performance Features**
+- **High Performance**: Optimized for real-time SRE monitoring and analysis
+- **Local Processing**: Local model processing for sensitive data
 - **Professional Organization**: Structured documentation and deployment automation
-- **Production Ready**: Complete enterprise deployment guides and health monitoring
+- **Production Ready**: Complete deployment guides and health monitoring
+- **Scalable Architecture**: Built for enterprise-grade SRE operations
 
 ### SRE-Specific Features
 - **Priority Filtering** - P1 (Critical), P2 (High), P3 (Medium) event classification
@@ -72,17 +71,15 @@ Your project is now beautifully organized with comprehensive documentation:
 ### 📖 **Documentation Structure**
 - **[`docs/`](docs/)** - Complete documentation suite
   - **[Setup Guides](docs/setup/)** - Installation and configuration
-  - **[Corporate Deployment](docs/corporate/)** - Enterprise/Zscaler guides  
   - **[Production Guides](docs/deployment/)** - Production deployment
 - **[`PROJECT_STRUCTURE.md`](PROJECT_STRUCTURE.md)** - Complete file organization
 - **[`scripts/`](scripts/)** - Organized automation scripts
 
 ### 🎯 **Quick Access Documentation**
 - **Production Guide**: [`docs/deployment/PRODUCTION_READY_GUIDE.md`](docs/deployment/PRODUCTION_READY_GUIDE.md)
-- **Corporate Setup**: [`docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md`](docs/corporate/ZSCALER_DEPLOYMENT_GUIDE.md)
 - **Multi-Provider Setup**: [`docs/setup/MULTI_PROVIDER_SETUP.md`](docs/setup/MULTI_PROVIDER_SETUP.md)
 - **Error Handling**: [`docs/ERROR_HANDLING.md`](docs/ERROR_HANDLING.md) - Professional error handling guide
-- **No Bullshitting Rules**: [`docs/NO_BULLSHITTING_RULES.md`](docs/NO_BULLSHITTING_RULES.md) - Philosophy and implementation
+- **No bs Rules**: [`docs/NO_BS_RULES.md`](docs/NO_BS_RULES.md) - Philosophy and implementation
 - **Cursor AI Rules**: [`docs/CURSOR_AI_RULES.md`](docs/CURSOR_AI_RULES.md) - AI development guidelines
 
 ## 📊 Current Production Data
