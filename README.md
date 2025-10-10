@@ -136,14 +136,40 @@ npm run dev
 
 The frontend will run on **http://localhost:3000**
 
-### 3. Anthropic AI Integration (Optional)
+### 3. AI Provider Configuration (Optional)
 
+#### Basic Anthropic Setup
 ```bash
 # Set your Anthropic API key
 export ANTHROPIC_API_KEY=your_api_key_here
 
 # Or create a .env.local file
 echo "ANTHROPIC_API_KEY=your_api_key_here" > .env.local
+```
+
+#### Multi-Provider AI Setup (Advanced)
+```bash
+# AWS Bedrock (Recommended for Enterprise)
+export AWS_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=your_aws_key
+export AWS_SECRET_ACCESS_KEY=your_aws_secret
+export ENABLE_BEDROCK=true
+export BEDROCK_MODEL_ID=anthropic.claude-3-5-sonnet-20241022-v2:0
+
+# Set provider priority
+export PROVIDER_PRIORITY=bedrock,anthropic,openai
+```
+
+#### BestEgg SRE API Integration (Corporate)
+```bash
+# Copy credentials template
+cp credentials.py.example credentials.py
+
+# Edit with your BestEgg SRE API credentials
+nano credentials.py
+
+# Test configuration
+python test_bestegg_api.py
 ```
 
 ## 🎯 Usage
