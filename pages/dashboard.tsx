@@ -73,50 +73,50 @@ const Dashboard: React.FC = () => {
   // const [showPredictivePanel, setShowPredictivePanel] = useState<boolean>(true);
 
   // Fetch real events from API with filtering
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        setLoading(true);
-        
-        // Build query parameters for server-side filtering
-        const params = new URLSearchParams();
-        
-        // Add priority filter if not 'all'
-        if (selectedPriorityFilter !== 'all') {
-          params.append('priority', selectedPriorityFilter);
-        }
-        
-        // Add source filter if not 'all'
-        if (selectedSourceFilter !== 'all') {
-          params.append('source', selectedSourceFilter);
-        }
-        
-        // Add limit to prevent too many events at once
-        params.append('limit', '100');
-        
-        const queryString = params.toString();
-        const url = `/api/events/real${queryString ? `?${queryString}` : ''}`;
-        
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setEvents(data.result || []);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching events:', err);
-        const errorMessage = err instanceof Error ? err.message : 'Failed to fetch events from SRE API';
-        setError(errorMessage);
-        // No fake data - show empty state with real error
-        setEvents([]);
-      } finally {
-        setLoading(false);
+  const fetchEvents = useCallback(async () => {
+    try {
+      setLoading(true);
+      
+      // Build query parameters for server-side filtering
+      const params = new URLSearchParams();
+      
+      // Add priority filter if not 'all'
+      if (selectedPriorityFilter !== 'all') {
+        params.append('priority', selectedPriorityFilter);
       }
-    };
-
-    fetchEvents();
+      
+      // Add source filter if not 'all'
+      if (selectedSourceFilter !== 'all') {
+        params.append('source', selectedSourceFilter);
+      }
+      
+      // Add limit to prevent too many events at once
+      params.append('limit', '100');
+      
+      const queryString = params.toString();
+      const url = `/api/events/real${queryString ? `?${queryString}` : ''}`;
+      
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setEvents(data.result || []);
+      setError(null);
+    } catch (err) {
+      console.error('Error fetching events:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to fetch events from SRE API';
+      setError(errorMessage);
+      // No fake data - show empty state with real error
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
   }, [selectedPriorityFilter, selectedSourceFilter]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
 
   // Check AI availability on component mount
   useEffect(() => {

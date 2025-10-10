@@ -445,7 +445,7 @@ async def chat(request: ChatRequest):
                             pass
                     
                     # Generate intelligent response using NeMo LLM
-                    llm_response = nemo_enhanced_sre.intelligent_sre_analysis(prompt, sre_context)
+                    llm_response = await nemo_enhanced_sre.intelligent_sre_analysis(prompt, sre_context)
                     
                     return ChatResponse(response=llm_response)
                 except Exception as e:
@@ -1488,7 +1488,7 @@ async def nemo_sre_analysis(request: dict):
         if not query:
             raise HTTPException(status_code=400, detail="Query is required")
         
-        response = nemo_enhanced_sre.intelligent_sre_analysis(query, events_context)
+        response = await nemo_enhanced_sre.intelligent_sre_analysis(query, events_context)
         return {"response": response, "status": "success"}
     except Exception as e:
         logger.error(f"Error in NeMo SRE analysis: {e}")
@@ -1521,7 +1521,7 @@ async def analyze_event(request: dict):
                 """
                 
                 # Use the enhanced SRE analysis
-                analysis_result = nemo_enhanced_sre.intelligent_sre_analysis(
+                analysis_result = await nemo_enhanced_sre.intelligent_sre_analysis(
                     "Analyze this SRE event for root cause and recommended actions",
                     event_details
                 )
@@ -1649,7 +1649,7 @@ async def nemo_analyze_event(request: dict):
         
         # Use enhanced SRE analysis
         if nemo_enhanced_sre:
-            analysis_result = nemo_enhanced_sre.intelligent_sre_analysis(
+            analysis_result = await nemo_enhanced_sre.intelligent_sre_analysis(
                 analysis_query,
                 f"SRE Event Analysis for {event.get('event_id', 'unknown')}"
             )
@@ -1937,7 +1937,7 @@ async def predictive_incident_analysis(request: dict):
                 Focus on actionable predictions with high confidence scores.
                 """
                 
-                ai_response = nemo_enhanced_sre.intelligent_sre_analysis(
+                ai_response = await nemo_enhanced_sre.intelligent_sre_analysis(
                     "Predictive incident analysis",
                     analysis_prompt
                 )
